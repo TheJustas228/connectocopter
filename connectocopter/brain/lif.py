@@ -22,7 +22,10 @@ Integration scheme
 ------------------
 Brian2 integrates the linear ODEs exactly (``method='linear'``) at
 dt = 0.1 ms with the per-step order *state update -> threshold -> synaptic
-delivery / Poisson input -> reset*.  We keep that order.  Every synapse has
+delivery / Poisson input -> reset*.  We keep that order, including Brian2's
+"conditional write" semantics: because v and g are declared
+``(unless refractory)``, synaptic and Poisson input arriving while a neuron is
+refractory (or in the step it spikes) is discarded, not accumulated.  Every synapse has
 the same delay D = t_dly / dt = 18 steps, so spikes emitted inside a block of
 K <= D steps cannot influence that same block.  Each block therefore runs as
 
@@ -99,16 +102,20 @@ if _HAVE_TRITON:
             g = tl.where(nr, g * es, g)
             # 2) threshold
             spk = (v > v_th) & nr & mask
-            # 3) synaptic delivery from the ring buffer + Poisson drive
+            # 3) synaptic delivery from the ring buffer + Poisson drive.  As in
+            #    Brian2, v and g are "(unless refractory)", so writes to them
+            #    from synapses / PoissonInput are discarded while the neuron is
+            #    refractory -- including the step in which it just spiked.
             slot = ((pos + k) % n_slots).to(tl.int64)
             pp = pend_ptr + slot * n_total + offs64
             syn = tl.load(pp, mask=mask, other=0.0)
             # load and store may be mapped to different threads: order them
             tl.debug_barrier()
             tl.store(pp, tl.zeros([BLOCK], dtype=tl.float32), mask=mask)
-            g = g + syn * w_syn
+            live = nr & (~spk)
+            g = g + tl.where(live, syn * w_syn, 0.0)
             r = tl.rand(seed, (step0 + k) * n_total + offs64)
-            v = v + tl.where(r < p, w_poi, 0.0)
+            v = v + tl.where(live & (r < p), w_poi, 0.0)
             # 4) reset
             v = tl.where(spk, v_rst, v)
             g = tl.where(spk, 0.0, g)
@@ -304,10 +311,11 @@ class LIFBrain:
             v = torch.where(nr, p.v_0 + (u - a) * self.em + a * self.es, v)
             g = torch.where(nr, g * self.es, g)
             spk = (v > p.v_th) & nr
-            g = g + self.pending[slot] * p.w_syn
+            live = nr & ~spk  # Brian2 conditional write: no input while refractory
+            g = g + torch.where(live, self.pending[slot] * p.w_syn, 0.0)
             self.pending[slot] = 0
             r = torch.rand((B, N), generator=self._gen, device=self.device)
-            v = v + torch.where(r < prob, self.w_poi, 0.0)
+            v = v + torch.where(live & (r < prob), self.w_poi, 0.0)
             v = torch.where(spk, torch.full_like(v, p.v_rst), v)
             g = torch.where(spk, torch.zeros_like(g), g)
             ref = torch.where(spk, self.rfc - 1, ref - 1).clamp_min(-1)

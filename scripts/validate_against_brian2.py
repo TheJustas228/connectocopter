@@ -118,9 +118,10 @@ def compare() -> None:
     import matplotlib.pyplot as plt
 
     summary = {"experiment": "sugarR (21 right sugar GRNs, FlyWire v630), 30 trials x 1 s", "conditions": {}}
-    fig, axes = plt.subplots(1, len(RATES_HZ) + 1, figsize=(4 * (len(RATES_HZ) + 1), 4))
+    rates = [hz for hz in RATES_HZ if (OUT / f"brian2_sugarR_{hz}Hz.parquet").exists()]
+    fig, axes = plt.subplots(1, len(rates) + 1, figsize=(4 * (len(rates) + 1), 4))
     mn9_b, mn9_p = [], []
-    for ax, hz in zip(axes, RATES_HZ):
+    for ax, hz in zip(axes, rates):
         b = pd.read_parquet(OUT / f"brian2_sugarR_{hz}Hz.parquet")["rate_hz"]
         p = pd.read_parquet(OUT / f"port_sugarR_{hz}Hz.parquet")["rate_hz"]
         both = pd.concat([b.rename("brian2"), p.rename("port")], axis=1).fillna(0.0)
@@ -148,8 +149,8 @@ def compare() -> None:
         ax.set(xlim=(0, lim), ylim=(0, lim), xlabel="Brian2 original (Hz)", ylabel="GPU port (Hz)",
                title=f"sugar GRNs @ {hz} Hz\nr = {r:.3f}, n = {len(both)}")
     ax = axes[-1]
-    ax.plot(RATES_HZ, mn9_b, "o-", label="Brian2 original")
-    ax.plot(RATES_HZ, mn9_p, "s--", label="GPU port")
+    ax.plot(rates, mn9_b, "o-", label="Brian2 original")
+    ax.plot(rates, mn9_p, "s--", label="GPU port")
     ax.set(xlabel="sugar GRN drive (Hz)", ylabel="MN9 rate (Hz)", title="Proboscis motor neuron MN9")
     ax.legend()
     fig.tight_layout()
