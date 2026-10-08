@@ -1,0 +1,803 @@
+{
+ "meta": {
+  "generated": "2026-10-08 09:19:27",
+  "python": "3.12.3",
+  "platform": "Linux-6.18.40.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA GeForce RTX 3070",
+  "torch": "2.11.0+cu128",
+  "mujoco": "3.15.0"
+ },
+ "summary": {
+  "flight_course": {
+   "baseline": {
+    "n": 16,
+    "success": 12,
+    "success_rate": 0.75,
+    "ci95": [
+     0.505,
+     0.898
+    ],
+    "landing_error_m": {
+     "mean": 0.292,
+     "sd": 0.083,
+     "n": 13
+    },
+    "flight_time_s": {
+     "mean": 21.398,
+     "sd": 11.11,
+     "n": 16
+    },
+    "collisions": {
+     "mean": 2.5,
+     "sd": 5.087,
+     "n": 16
+    },
+    "energy_J": {
+     "mean": 3886.812,
+     "sd": 3227.636,
+     "n": 16
+    },
+    "realtime_factor_median": 1.49
+   },
+   "connectome": {
+    "n": 16,
+    "success": 10,
+    "success_rate": 0.625,
+    "ci95": [
+     0.386,
+     0.815
+    ],
+    "landing_error_m": {
+     "mean": 0.151,
+     "sd": 0.064,
+     "n": 12
+    },
+    "flight_time_s": {
+     "mean": 24.133,
+     "sd": 11.771,
+     "n": 16
+    },
+    "collisions": {
+     "mean": 2.438,
+     "sd": 5.208,
+     "n": 16
+    },
+    "energy_J": {
+     "mean": 4906.837,
+     "sd": 3216.885,
+     "n": 16
+    },
+    "realtime_factor_median": 0.89
+   },
+   "connectome_uncalibrated": {
+    "n": 16,
+    "success": 4,
+    "success_rate": 0.25,
+    "ci95": [
+     0.102,
+     0.495
+    ],
+    "landing_error_m": {
+     "mean": 0.308,
+     "sd": 0.032,
+     "n": 9
+    },
+    "flight_time_s": {
+     "mean": 29.959,
+     "sd": 13.068,
+     "n": 16
+    },
+    "collisions": {
+     "mean": 6.875,
+     "sd": 7.817,
+     "n": 16
+    },
+    "energy_J": {
+     "mean": 6371.038,
+     "sd": 3477.843,
+     "n": 16
+    },
+    "realtime_factor_median": 0.96
+   },
+   "rewired_connectome": {
+    "n": 16,
+    "success": 0,
+    "success_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.194
+    ],
+    "flight_time_s": {
+     "mean": 44.5,
+     "sd": 0.0,
+     "n": 16
+    },
+    "collisions": {
+     "mean": 3.625,
+     "sd": 1.932,
+     "n": 16
+    },
+    "energy_J": {
+     "mean": 8751.663,
+     "sd": 1510.279,
+     "n": 16
+    },
+    "realtime_factor_median": 1.0
+   }
+  },
+  "looming_escape": {
+   "baseline": {
+    "n": 15,
+    "success": 15,
+    "success_rate": 1.0,
+    "ci95": [
+     0.796,
+     1.0
+    ],
+    "n_catch": 15,
+    "false_escapes": 0,
+    "reaction_time_s": {
+     "mean": 1.063,
+     "sd": 0.224,
+     "n": 15
+    },
+    "ttc_at_escape_s": {
+     "mean": 0.763,
+     "sd": 0.116,
+     "n": 15
+    },
+    "min_distance_m": {
+     "mean": 1.444,
+     "sd": 0.286,
+     "n": 15
+    },
+    "realtime_factor_median": 1.38
+   },
+   "connectome": {
+    "n": 15,
+    "success": 15,
+    "success_rate": 1.0,
+    "ci95": [
+     0.796,
+     1.0
+    ],
+    "n_catch": 15,
+    "false_escapes": 0,
+    "reaction_time_s": {
+     "mean": 1.007,
+     "sd": 0.255,
+     "n": 15
+    },
+    "ttc_at_escape_s": {
+     "mean": 0.819,
+     "sd": 0.151,
+     "n": 15
+    },
+    "min_distance_m": {
+     "mean": 1.607,
+     "sd": 0.411,
+     "n": 15
+    },
+    "realtime_factor_median": 0.9
+   },
+   "rewired_connectome": {
+    "n": 15,
+    "success": 0,
+    "success_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.204
+    ],
+    "n_catch": 15,
+    "false_escapes": 0,
+    "min_distance_m": {
+     "mean": 0.239,
+     "sd": 0.002,
+     "n": 15
+    },
+    "realtime_factor_median": 0.88
+   },
+   "silence_giant_fiber": {
+    "n": 15,
+    "success": 0,
+    "success_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.204
+    ],
+    "n_catch": 15,
+    "false_escapes": 0,
+    "min_distance_m": {
+     "mean": 0.257,
+     "sd": 0.014,
+     "n": 15
+    },
+    "realtime_factor_median": 0.85
+   }
+  },
+  "obstacle_course": {
+   "baseline": {
+    "n": 20,
+    "success": 18,
+    "success_rate": 0.9,
+    "ci95": [
+     0.699,
+     0.972
+    ],
+    "time_to_goal_s": {
+     "mean": 16.824,
+     "sd": 3.025,
+     "n": 18
+    },
+    "path_efficiency": {
+     "mean": 0.952,
+     "sd": 0.1,
+     "n": 18
+    },
+    "collisions": {
+     "mean": 0.45,
+     "sd": 0.921,
+     "n": 20
+    },
+    "energy_J": {
+     "mean": 100.855,
+     "sd": 51.577,
+     "n": 20
+    },
+    "collision_free_success": 16,
+    "collision_free_ci95": [
+     0.584,
+     0.919
+    ],
+    "realtime_factor_median": 1.57
+   },
+   "connectome": {
+    "n": 20,
+    "success": 19,
+    "success_rate": 0.95,
+    "ci95": [
+     0.764,
+     0.991
+    ],
+    "time_to_goal_s": {
+     "mean": 17.687,
+     "sd": 1.89,
+     "n": 19
+    },
+    "path_efficiency": {
+     "mean": 0.945,
+     "sd": 0.057,
+     "n": 19
+    },
+    "collisions": {
+     "mean": 1.35,
+     "sd": 2.393,
+     "n": 20
+    },
+    "energy_J": {
+     "mean": 106.84,
+     "sd": 34.545,
+     "n": 20
+    },
+    "collision_free_success": 9,
+    "collision_free_ci95": [
+     0.258,
+     0.658
+    ],
+    "realtime_factor_median": 0.91
+   },
+   "connectome_uncalibrated": {
+    "n": 20,
+    "success": 19,
+    "success_rate": 0.95,
+    "ci95": [
+     0.764,
+     0.991
+    ],
+    "time_to_goal_s": {
+     "mean": 19.222,
+     "sd": 3.22,
+     "n": 19
+    },
+    "path_efficiency": {
+     "mean": 0.901,
+     "sd": 0.08,
+     "n": 19
+    },
+    "collisions": {
+     "mean": 2.15,
+     "sd": 2.555,
+     "n": 20
+    },
+    "energy_J": {
+     "mean": 113.035,
+     "sd": 33.947,
+     "n": 20
+    },
+    "collision_free_success": 5,
+    "collision_free_ci95": [
+     0.112,
+     0.469
+    ],
+    "realtime_factor_median": 0.77
+   },
+   "rewired_connectome": {
+    "n": 20,
+    "success": 4,
+    "success_rate": 0.2,
+    "ci95": [
+     0.081,
+     0.416
+    ],
+    "time_to_goal_s": {
+     "mean": 23.595,
+     "sd": 2.792,
+     "n": 4
+    },
+    "path_efficiency": {
+     "mean": 0.737,
+     "sd": 0.061,
+     "n": 4
+    },
+    "collisions": {
+     "mean": 37.75,
+     "sd": 86.457,
+     "n": 20
+    },
+    "energy_J": {
+     "mean": 171.015,
+     "sd": 54.034,
+     "n": 20
+    },
+    "collision_free_success": 0,
+    "collision_free_ci95": [
+     0.0,
+     0.161
+    ],
+    "realtime_factor_median": 0.82
+   }
+  },
+  "odor_plume": {
+   "baseline": {
+    "n": 12,
+    "success": 5,
+    "success_rate": 0.417,
+    "ci95": [
+     0.193,
+     0.68
+    ],
+    "time_to_source_s": {
+     "mean": 12.228,
+     "sd": 2.985,
+     "n": 5
+    },
+    "final_dist_m": {
+     "mean": 1.96,
+     "sd": 1.175,
+     "n": 12
+    },
+    "realtime_factor_median": 1.9
+   },
+   "connectome_with_ORN_input": {
+    "n": 4,
+    "success": 0,
+    "success_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.49
+    ],
+    "final_dist_m": {
+     "mean": 6.421,
+     "sd": 1.349,
+     "n": 4
+    },
+    "realtime_factor_median": 1.08
+   }
+  },
+  "target_seek": {
+   "baseline": {
+    "n": 20,
+    "success": 20,
+    "success_rate": 1.0,
+    "ci95": [
+     0.839,
+     1.0
+    ],
+    "time_to_goal_s": {
+     "mean": 4.001,
+     "sd": 0.628,
+     "n": 20
+    },
+    "path_efficiency": {
+     "mean": 0.99,
+     "sd": 0.004,
+     "n": 20
+    },
+    "collisions": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "n": 20
+    },
+    "energy_J": {
+     "mean": 19.57,
+     "sd": 3.694,
+     "n": 20
+    },
+    "realtime_factor_median": 1.82
+   },
+   "connectome": {
+    "n": 20,
+    "success": 20,
+    "success_rate": 1.0,
+    "ci95": [
+     0.839,
+     1.0
+    ],
+    "time_to_goal_s": {
+     "mean": 4.125,
+     "sd": 0.705,
+     "n": 20
+    },
+    "path_efficiency": {
+     "mean": 0.992,
+     "sd": 0.003,
+     "n": 20
+    },
+    "collisions": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "n": 20
+    },
+    "energy_J": {
+     "mean": 26.655,
+     "sd": 4.872,
+     "n": 20
+    },
+    "realtime_factor_median": 1.03
+   },
+   "connectome_uncalibrated": {
+    "n": 20,
+    "success": 20,
+    "success_rate": 1.0,
+    "ci95": [
+     0.839,
+     1.0
+    ],
+    "time_to_goal_s": {
+     "mean": 4.14,
+     "sd": 0.635,
+     "n": 20
+    },
+    "path_efficiency": {
+     "mean": 0.986,
+     "sd": 0.002,
+     "n": 20
+    },
+    "collisions": {
+     "mean": 0.0,
+     "sd": 0.0,
+     "n": 20
+    },
+    "energy_J": {
+     "mean": 27.215,
+     "sd": 4.694,
+     "n": 20
+    },
+    "realtime_factor_median": 1.03
+   },
+   "rewired_connectome": {
+    "n": 20,
+    "success": 9,
+    "success_rate": 0.45,
+    "ci95": [
+     0.258,
+     0.658
+    ],
+    "time_to_goal_s": {
+     "mean": 4.173,
+     "sd": 0.432,
+     "n": 9
+    },
+    "path_efficiency": {
+     "mean": 0.956,
+     "sd": 0.023,
+     "n": 9
+    },
+    "collisions": {
+     "mean": 2.9,
+     "sd": 2.644,
+     "n": 20
+    },
+    "energy_J": {
+     "mean": 43.585,
+     "sd": 31.689,
+     "n": 20
+    },
+    "realtime_factor_median": 1.08
+   },
+   "silence_LC10a": {
+    "n": 20,
+    "success": 9,
+    "success_rate": 0.45,
+    "ci95": [
+     0.258,
+     0.658
+    ],
+    "time_to_goal_s": {
+     "mean": 4.173,
+     "sd": 0.432,
+     "n": 9
+    },
+    "path_efficiency": {
+     "mean": 0.956,
+     "sd": 0.023,
+     "n": 9
+    },
+    "collisions": {
+     "mean": 2.0,
+     "sd": 1.871,
+     "n": 20
+    },
+    "energy_J": {
+     "mean": 52.525,
+     "sd": 38.702,
+     "n": 20
+    },
+    "realtime_factor_median": 1.11
+   }
+  },
+  "taste_dock": {
+   "baseline": {
+    "n": 16,
+    "success": 16,
+    "success_rate": 1.0,
+    "ci95": [
+     0.806,
+     1.0
+    ],
+    "dock_latency_s": {
+     "mean": 0.24,
+     "sd": 0.0,
+     "n": 16
+    },
+    "docked_sugar_rate": 1.0,
+    "docked_bitter_rate": 0.0,
+    "docked_mixed_rate": 0.0,
+    "realtime_factor_median": 2.05
+   },
+   "connectome": {
+    "n": 16,
+    "success": 16,
+    "success_rate": 1.0,
+    "ci95": [
+     0.806,
+     1.0
+    ],
+    "dock_latency_s": {
+     "mean": 0.281,
+     "sd": 0.011,
+     "n": 16
+    },
+    "docked_sugar_rate": 1.0,
+    "docked_bitter_rate": 0.0,
+    "docked_mixed_rate": 0.0,
+    "realtime_factor_median": 1.24
+   },
+   "no_bitter_input": {
+    "n": 16,
+    "success": 7,
+    "success_rate": 0.438,
+    "ci95": [
+     0.231,
+     0.668
+    ],
+    "dock_latency_s": {
+     "mean": 0.286,
+     "sd": 0.014,
+     "n": 7
+    },
+    "docked_sugar_rate": 0.438,
+    "docked_bitter_rate": 0.0,
+    "docked_mixed_rate": 0.562,
+    "realtime_factor_median": 1.14
+   },
+   "rewired_connectome": {
+    "n": 16,
+    "success": 0,
+    "success_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.194
+    ],
+    "docked_sugar_rate": 0.0,
+    "docked_bitter_rate": 0.0,
+    "docked_mixed_rate": 0.0,
+    "realtime_factor_median": 1.13
+   }
+  },
+  "vibration_escape": {
+   "baseline": {
+    "n": 7,
+    "success": 7,
+    "success_rate": 1.0,
+    "ci95": [
+     0.646,
+     1.0
+    ],
+    "reaction_time_s": {
+     "mean": 0.029,
+     "sd": 0.007,
+     "n": 7
+    },
+    "realtime_factor_median": 1.42
+   },
+   "connectome": {
+    "n": 7,
+    "success": 7,
+    "success_rate": 1.0,
+    "ci95": [
+     0.646,
+     1.0
+    ],
+    "reaction_time_s": {
+     "mean": 0.035,
+     "sd": 0.011,
+     "n": 7
+    },
+    "realtime_factor_median": 0.93
+   },
+   "silence_giant_fiber": {
+    "n": 7,
+    "success": 0,
+    "success_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.354
+    ],
+    "realtime_factor_median": 0.91
+   }
+  },
+  "yaw_stabilization": {
+   "baseline_no_optomotor": {
+    "n": 12,
+    "success": 0,
+    "success_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.243
+    ],
+    "heading_drift_deg": {
+     "mean": 4319.625,
+     "sd": 580.007,
+     "n": 12
+    },
+    "yaw_rate_rms": {
+     "mean": 12.117,
+     "sd": 1.592,
+     "n": 12
+    },
+    "realtime_factor_median": 1.95
+   },
+   "baseline_optomotor": {
+    "n": 12,
+    "success": 11,
+    "success_rate": 0.917,
+    "ci95": [
+     0.646,
+     0.985
+    ],
+    "heading_drift_deg": {
+     "mean": 66.192,
+     "sd": 26.24,
+     "n": 12
+    },
+    "yaw_rate_rms": {
+     "mean": 0.402,
+     "sd": 0.152,
+     "n": 12
+    },
+    "realtime_factor_median": 1.97
+   },
+   "connectome": {
+    "n": 12,
+    "success": 2,
+    "success_rate": 0.167,
+    "ci95": [
+     0.047,
+     0.448
+    ],
+    "heading_drift_deg": {
+     "mean": 828.85,
+     "sd": 1070.427,
+     "n": 12
+    },
+    "yaw_rate_rms": {
+     "mean": 2.85,
+     "sd": 3.255,
+     "n": 12
+    },
+    "realtime_factor_median": 1.06
+   },
+   "connectome_uncalibrated": {
+    "n": 12,
+    "success": 3,
+    "success_rate": 0.25,
+    "ci95": [
+     0.089,
+     0.532
+    ],
+    "heading_drift_deg": {
+     "mean": 803.833,
+     "sd": 1053.45,
+     "n": 12
+    },
+    "yaw_rate_rms": {
+     "mean": 2.693,
+     "sd": 3.15,
+     "n": 12
+    },
+    "realtime_factor_median": 1.1
+   },
+   "no_optic_flow_input": {
+    "n": 12,
+    "success": 0,
+    "success_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.243
+    ],
+    "heading_drift_deg": {
+     "mean": 4491.183,
+     "sd": 915.609,
+     "n": 12
+    },
+    "yaw_rate_rms": {
+     "mean": 12.521,
+     "sd": 2.472,
+     "n": 12
+    },
+    "realtime_factor_median": 1.14
+   },
+   "rewired_connectome": {
+    "n": 12,
+    "success": 0,
+    "success_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.243
+    ],
+    "heading_drift_deg": {
+     "mean": 4339.275,
+     "sd": 456.311,
+     "n": 12
+    },
+    "yaw_rate_rms": {
+     "mean": 12.162,
+     "sd": 1.268,
+     "n": 12
+    },
+    "realtime_factor_median": 1.11
+   },
+   "silence_DNp15": {
+    "n": 12,
+    "success": 0,
+    "success_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.243
+    ],
+    "heading_drift_deg": {
+     "mean": 4408.2,
+     "sd": 1379.719,
+     "n": 12
+    },
+    "yaw_rate_rms": {
+     "mean": 12.401,
+     "sd": 3.629,
+     "n": 12
+    },
+    "realtime_factor_median": 1.12
+   }
+  }
+ }
+}

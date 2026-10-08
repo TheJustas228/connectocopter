@@ -142,7 +142,9 @@ def main() -> None:
              f"implausible: wheels, gearmotors, struts, drivers and regulator add ~{4*10 + 2*20 + 2*2 + 2*1 + 4 + 24 + 4} g "
              f"(~{(4*10 + 2*20 + 2*2 + 2*1 + 4 + 24 + 4) / res['total_mass_g'] * 100:.0f}% of all-up weight) and the "
              "thrust-to-weight ratio stays above 8. The simulated wheel torque limit (0.25 N m) is higher than the chosen "
-             "gearmotor's 0.13 N m stall torque; see the sensitivity check in docs/experiments.md.\n")
+             "gearmotor's 0.13 N m stall torque. A sensitivity check with the gearmotor's real limits (0.127 N m, "
+             "34.6 rad/s; `scripts/sensitivity_wheels.py`, 30 episodes) left every ground task successful, about 5% "
+             "slower (docs/experiments.md).\n")
     c = res["compute_estimate"]
     L.append("## Compute: can the whole brain fly on board?\n")
     L.append(f"On an RTX 3070 the full 138,639-neuron model advances one 1.8 ms block in {c['measured_rtx3070_ms_per_1.8ms_block']} ms "

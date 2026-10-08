@@ -18,6 +18,15 @@
       "mean_abs_rate_diff_hz": 0.3699,
       "MN9_rate_brian2_hz": 59.62,
       "MN9_rate_port_hz": 58.65
+    },
+    "150Hz": {
+      "pearson_r_rates": 0.9999,
+      "n_active_brian2(>=1Hz)": 344,
+      "n_active_port(>=1Hz)": 344,
+      "jaccard_active_sets": 0.9942,
+      "mean_abs_rate_diff_hz": 0.3008,
+      "MN9_rate_brian2_hz": 70.22,
+      "MN9_rate_port_hz": 70.25
     }
   },
   "port_timing": {

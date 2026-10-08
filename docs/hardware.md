@@ -61,7 +61,7 @@ Energy per metre travelled (LiPo build): **189.2 J/m flying** vs **37.8 J/m roll
 
 Assumptions and uncertainty: hover power below 40% throttle is extrapolated with a power-law fit (P ∝ T^1.3) to the manufacturer table; rolling resistance coefficient 0.03 (silicone tyres on hard floor) and 40% gearmotor+driver efficiency; 80% usable battery energy; no wind, no battery sag. Treat endurance figures as ±25%.
 
-The simulator limits each rotor to 16 N (1.63 kgf), 58% of this motor's maximum thrust, so simulated flight behaviour does not rely on thrust the hardware cannot deliver. The wheels do not make the flight design implausible: wheels, gearmotors, struts, drivers and regulator add ~118 g (~11% of all-up weight) and the thrust-to-weight ratio stays above 8. The simulated wheel torque limit (0.25 N m) is higher than the chosen gearmotor's 0.13 N m stall torque; see the sensitivity check in docs/experiments.md.
+The simulator limits each rotor to 16 N (1.63 kgf), 58% of this motor's maximum thrust, so simulated flight behaviour does not rely on thrust the hardware cannot deliver. The wheels do not make the flight design implausible: wheels, gearmotors, struts, drivers and regulator add ~118 g (~11% of all-up weight) and the thrust-to-weight ratio stays above 8. The simulated wheel torque limit (0.25 N m) is higher than the chosen gearmotor's 0.13 N m stall torque. A sensitivity check with the gearmotor's real limits (0.127 N m, 34.6 rad/s; `scripts/sensitivity_wheels.py`, 30 episodes) left every ground task successful, about 5% slower (docs/experiments.md).
 
 ## Compute: can the whole brain fly on board?
 

@@ -19,7 +19,11 @@ controllers:
     tasks: [looming_escape, vibration_escape, target_seek, obstacle_course, flight_course, taste_dock, yaw_stabilization]
   baseline:
     kind: baseline
-    tasks: all
+    tasks: [looming_escape, vibration_escape, target_seek, obstacle_course, flight_course, taste_dock, odor_plume]
+  baseline_optomotor:          # the yaw task's baseline: engineered optomotor term (gain chosen on tuning seeds 0-2)
+    kind: baseline
+    kwargs: {k_optomotor: 900.0}
+    tasks: [yaw_stabilization]
   baseline_no_optomotor:
     kind: baseline
     kwargs: {k_optomotor: 0.0}

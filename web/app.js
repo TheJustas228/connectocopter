@@ -554,11 +554,16 @@ async function setupLive() {
   } catch (e) { /* static hosting: no live server */ }
 }
 
+function pause() {
+  state.playing = false;
+  $('play').textContent = 'Play';
+}
+
 // small automation hook (used by scripts/capture_viewer.py for README media)
 window.connectocopter = {
   frameCount: () => (state.replay ? state.replay.frames.length : 0),
-  showFrame: (i) => { state.playing = false; state.simT = i * ((state.replay && state.replay.control_dt) || 0.02); show(i); },
-  load: (file) => { $('episode').value = file; return loadReplay(file).then(() => { state.playing = false; }); },
+  showFrame: (i) => { pause(); state.simT = i * ((state.replay && state.replay.control_dt) || 0.02); show(i); },
+  load: (file) => { $('episode').value = file; return loadReplay(file).then(pause); },
 };
 
 async function main() {
@@ -584,7 +589,7 @@ async function main() {
     state.simT = i * (r.control_dt || 0.02);
     lastBrainIdx = -1;
     show(i);
-    if (params.get('paused') === '1') { state.playing = false; $('play').textContent = 'Play'; }
+    if (params.get('paused') === '1') pause();
   }
   if (params.get('cam') === 'free') $('cam-free').click();
   requestAnimationFrame(tick);

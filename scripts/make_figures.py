@@ -22,10 +22,11 @@ B = ROOT / "results" / "benchmarks"
 IMG = ROOT / "docs" / "img"
 
 SURFACE, INK, MUTED, GRID = "#121a26", "#d7dee8", "#8a96a8", "#263345"
-COL = {"connectome": "#3987e5", "baseline": "#d95926"}
+COL = {"connectome": "#3987e5", "baseline": "#d95926", "baseline_optomotor": "#d95926"}  # the yaw task's baseline
 ABL = "#7b8799"
 LABEL = {
     "connectome": "Connectome (FlyWire LIF)", "baseline": "Baseline (hand-written rules)",
+    "baseline_optomotor": "Baseline + engineered optomotor",
     "rewired_connectome": "Rewired connectome", "connectome_uncalibrated": "Connectome, no L/R calibration",
     "silence_giant_fiber": "Connectome, Giant Fiber silenced", "silence_LC10a": "Connectome, LC10a silenced",
     "silence_DNp15": "Connectome, DNp15 silenced", "no_optic_flow_input": "Connectome, no HS/H2 input",
@@ -34,11 +35,11 @@ LABEL = {
 }
 TASK_TITLE = {
     "looming_escape": "Looming escape (survive the ball)", "vibration_escape": "Vibration escape (take off)",
-    "target_seek": "Drive to a beacon", "obstacle_course": "Rolling obstacle course",
+    "target_seek": "Drive to a beacon", "obstacle_course": "Rolling obstacle course (goal reached)",
     "flight_course": "Flight course + landing", "taste_dock": "Taste docking (sugar only)",
     "yaw_stabilization": "Hold heading, yaw gyro failed", "odor_plume": "Odor source (plume)",
 }
-ORDER = ["connectome", "baseline", "connectome_uncalibrated", "rewired_connectome", "silence_giant_fiber", "silence_LC10a",
+ORDER = ["connectome", "baseline", "baseline_optomotor", "connectome_uncalibrated", "rewired_connectome", "silence_giant_fiber", "silence_LC10a",
          "silence_DNp15", "no_optic_flow_input", "no_bitter_input", "baseline_no_optomotor", "connectome_with_ORN_input"]
 
 
@@ -121,21 +122,30 @@ def strip(ax, rows, key, xlabel, logx=False):
 
 
 def detail_figure():
-    fig, axes = plt.subplots(1, 3, figsize=(15, 3.6))
+    fig, axes = plt.subplots(2, 2, figsize=(15, 7.4))
+    axes = axes.ravel()
     rows = [(c, [m for m in load_raw("looming_escape", c) if not m.get("catch_trial")]) for c in ["connectome", "baseline", "rewired_connectome", "silence_giant_fiber"]]
     rows = [r for r in rows if r[1]]
     strip(axes[0], rows, "ttc_at_escape_s", "time-to-contact left when escaping (s)  ·  higher = earlier")
     axes[0].set_title("Looming escape: margin at take-off", loc="left")
-    rows = [(c, load_raw("yaw_stabilization", c)) for c in ["connectome", "baseline", "no_optic_flow_input", "silence_DNp15", "baseline_no_optomotor", "connectome_uncalibrated", "rewired_connectome"]]
+    rows = [(c, load_raw("yaw_stabilization", c)) for c in ["connectome", "baseline_optomotor", "no_optic_flow_input", "silence_DNp15", "baseline_no_optomotor", "connectome_uncalibrated", "rewired_connectome"]]
     rows = [r for r in rows if r[1]]
     strip(axes[1], rows, "heading_drift_deg", "heading drift over 7 s (deg, log scale)  ·  lower = better", logx=True)
-    axes[1].set_title("Yaw gyro failed: optic-flow stabilisation", loc="left")
+    axes[1].axvline(90, color=MUTED, lw=1, ls="--", zorder=1)
+    axes[1].set_title("Yaw gyro failed: heading drift (dashed = 90° limit)", loc="left")
     rows = [(c, [m for m in load_raw("flight_course", c) if m.get("landed")]) for c in ["connectome", "baseline", "connectome_uncalibrated", "rewired_connectome"]]
     rows = [r for r in rows if r[1]]
-    strip(axes[2], rows, "landing_error_m", "landing error (m)  ·  lower = better")
+    strip(axes[2], rows, "landing_error_m", "landing error (m)  ·  lower = better  ·  landed runs only")
     axes[2].set_title("Flight course: landing accuracy", loc="left")
+    rows = [(c, load_raw("obstacle_course", c)) for c in ["connectome", "baseline", "connectome_uncalibrated", "rewired_connectome"]]
+    rows = [r for r in rows if r[1]]
+    for c, ms in rows:
+        for m in ms:
+            m["contacts_p1"] = m.get("collisions", 0) + 1
+    strip(axes[3], rows, "contacts_p1", "contacts per run + 1 (log scale)  ·  1 = collision-free", logx=True)
+    axes[3].set_title("Obstacle course: contacts with pillars and walls", loc="left")
     fig.text(0.01, 0.01, "Dots = episodes (evaluation seeds); white tick = median.", color=MUTED, fontsize=9)
-    fig.tight_layout(rect=(0, 0.04, 1, 1))
+    fig.tight_layout(rect=(0, 0.03, 1, 1))
     fig.savefig(IMG / "results_details.png", dpi=130)
     plt.close(fig)
 

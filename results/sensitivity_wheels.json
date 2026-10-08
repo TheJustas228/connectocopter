@@ -1,0 +1,299 @@
+{
+ "params": {
+  "wheel_torque_max": 0.127,
+  "wheel_speed_max": 34.6
+ },
+ "tasks": {
+  "obstacle_course": {
+   "success_real_wheels": 10,
+   "success_sim_default": 10,
+   "n": 10,
+   "episodes": [
+    {
+     "seed": 1000,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 15.76,
+     "time_default": 15.86,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1001,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 15.7,
+     "time_default": 15.68,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1002,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 16.56,
+     "time_default": 16.78,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1003,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 17.42,
+     "time_default": 17.08,
+     "collisions_real": 1,
+     "collisions_default": 1
+    },
+    {
+     "seed": 1004,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 17.12,
+     "time_default": 17.2,
+     "collisions_real": 1,
+     "collisions_default": 1
+    },
+    {
+     "seed": 1005,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 29.26,
+     "time_default": 20.04,
+     "collisions_real": 5,
+     "collisions_default": 2
+    },
+    {
+     "seed": 1006,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 17.88,
+     "time_default": 17.3,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1007,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 17.88,
+     "time_default": 20.98,
+     "collisions_real": 0,
+     "collisions_default": 1
+    },
+    {
+     "seed": 1008,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 16.04,
+     "time_default": 15.84,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1009,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 18.06,
+     "time_default": 17.56,
+     "collisions_real": 0,
+     "collisions_default": 0
+    }
+   ]
+  },
+  "target_seek": {
+   "success_real_wheels": 10,
+   "success_sim_default": 10,
+   "n": 10,
+   "episodes": [
+    {
+     "seed": 1000,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 4.52,
+     "time_default": 4.52,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1001,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 5.48,
+     "time_default": 5.28,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1002,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 4.18,
+     "time_default": 4.24,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1003,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 3.82,
+     "time_default": 3.74,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1004,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 4.22,
+     "time_default": 3.4,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1005,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 3.8,
+     "time_default": 3.36,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1006,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 4.04,
+     "time_default": 4.02,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1007,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 3.82,
+     "time_default": 3.32,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1008,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 3.64,
+     "time_default": 3.68,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1009,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": 3.36,
+     "time_default": 3.36,
+     "collisions_real": 0,
+     "collisions_default": 0
+    }
+   ]
+  },
+  "taste_dock": {
+   "success_real_wheels": 10,
+   "success_sim_default": 10,
+   "n": 10,
+   "episodes": [
+    {
+     "seed": 1000,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": null,
+     "time_default": null,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1001,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": null,
+     "time_default": null,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1002,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": null,
+     "time_default": null,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1003,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": null,
+     "time_default": null,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1004,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": null,
+     "time_default": null,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1005,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": null,
+     "time_default": null,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1006,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": null,
+     "time_default": null,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1007,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": null,
+     "time_default": null,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1008,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": null,
+     "time_default": null,
+     "collisions_real": 0,
+     "collisions_default": 0
+    },
+    {
+     "seed": 1009,
+     "success_real_wheels": true,
+     "success_sim_default": true,
+     "time_real": null,
+     "time_default": null,
+     "collisions_real": 0,
+     "collisions_default": 0
+    }
+   ]
+  }
+ }
+}

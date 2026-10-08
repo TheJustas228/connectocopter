@@ -47,8 +47,9 @@ The unmodified `model.py` of Shiu et al. (pinned commit) and the GPU port were r
 |---|---|---|---|
 | 50 Hz | **0.9991** | 0.96 | 16.98 → 18.15 Hz |
 | 100 Hz | **0.9996** | 0.98 | 59.62 → 58.65 Hz |
-
-(150/200 Hz Brian2 runs: see `results/validation/summary.json` once the CPU jobs finish; each condition costs ~30 CPU-minutes at ~3 GB RAM.)
+| 150 Hz | **0.9999** | 0.99 | 70.22 → 70.25 Hz |
+BRIAN2_200_ROW
+(Each Brian2 condition costs ~30–60 CPU-minutes and ~3–6 GB RAM; the port needs ~5 s on the GPU for all 30 trials.)
 
 ![Brian2 vs GPU port](../results/validation/brian2_vs_port.png)
 
@@ -68,7 +69,7 @@ Before connecting anything to the robot, each candidate sensory population was a
 | sugar GRNs | MN9 (CB0701), CB0700, DNge059 | stop and "feed" (dock) |
 | bitter GRNs | weak; suppresses sugar → MN9 | veto docking |
 | Johnston's organ A/B (sound) | DNp01 (Giant Fiber, right side), DNg29 | escape take-off |
-| Johnston's organ C/E (wind) | DNb06, DNbe001, DNp18/19 | recorded; used only in the wind experiments |
+| Johnston's organ C/E (wind) | DNb06, DNbe001, DNp18/19 | encoded, but no benchmark task has ambient wind (input stays near 0 Hz) |
 | **any olfactory receptor neuron class, thermo- or hygrosensory neuron** | **runaway: ~8,100–10,300 neurons active, identical output regardless of input** | **not usable — see §5** |
 
 These pathways agree with the experimental literature (citations in `configs/interface.yaml` and `docs/sources.md`): LPLC2/LC4 → Giant Fiber (von Reyn et al. 2017; Ache et al. 2019); LC10a in object pursuit (Ribeiro et al. 2018); LC16 avoidance (Wu et al. 2016); HS + contralateral H2 → DNp15 (Suver et al. 2016; Erginkaya et al. 2025); sugar → MN9 and bitter suppression (Shiu et al. 2024); JO → Giant Fiber (Lehnert et al. 2013 — air-puff/sound input to the GF).
@@ -87,7 +88,7 @@ Every mapping lives in **`configs/interface.yaml`**. A sensor feature `f` become
 | yawflow_HS_L / R | HSN + HSE + HSS, left / right | 3 / 3 | front-to-back horizontal motion per hemifield from Hassenstein–Reichardt correlators | functionally approximated (EMD is the canonical model of T4/T5) |
 | yawflow_H2_L / R | H2, left / right | 1 / 1 | back-to-front horizontal motion per hemifield | functionally approximated |
 | vibration_L / R | Johnston's organ auditory (JO-A/B), left / right | 212 / 175 | vibration / sound event amplitude (task-generated) | functionally approximated |
-| wind_L / R | Johnston's organ wind/gravity (JO-C/E), left / right | 249 / 232 | apparent airflow at the antennae | functionally approximated; not used in benchmarks |
+| wind_L / R | Johnston's organ wind/gravity (JO-C/E), left / right | 249 / 232 | apparent airflow at the antennae | functionally approximated; connected in every task, but no task has ambient wind, so it stays near 0 Hz (max 5.4 Hz, in 6% of flight frames, in the recorded episodes) |
 | taste_sugar | sugar GRNs (both sides) | 32 | robot standing on a sugar pad (contact sensor) | directly represented (identified neurons, validated pathway); sensor is abstract |
 | taste_bitter | bitter GRNs | 42 | robot standing on a bitter pad | directly represented (identified neurons); sensor is abstract |
 
@@ -122,7 +123,7 @@ Spikes of identified descending/motor neurons are counted every 20 ms control st
 
 - Control period 20 ms: features → Poisson rates → 20 ms of brain (11 blocks) → decoded command → 10 physics steps of 2 ms.
 - The brain's sensory-to-descending latency is a few synaptic delays (≥ 1.8 ms each) plus integration; LPLC2 → Giant Fiber responds within one 20 ms step.
-- Closed loop with rendering on one RTX 3070 + llvmpipe camera rendering: ~1.0–1.3x real time for the connectome controller (median per task in `results/benchmarks/summary.md`).
+- Closed loop with rendering on one RTX 3070 + llvmpipe camera rendering: 0.9–1.2x real time for the connectome controller (median per task in `results/benchmarks/summary.md`; measured with other jobs running).
 
 ## 7. Reproducing everything in this document
 

@@ -109,6 +109,10 @@ class SensorSuite:
         f["wind_speed"] = speed
         f["wind_side"] = float(np.clip(-lateral, -3, 3))  # +ve: wind coming from the left
         # antennal deflection proxy: the windward antenna is deflected more
+        # true wind (apparent airflow + own velocity from odometry), direction it comes FROM in the
+        # body frame (0 = straight ahead, +ve = to the left); used by the baseline's plume tracker only
+        w_b = air_b + R.T @ t["vel_w"]
+        f["wind_from"] = float(np.arctan2(-w_b[1], -w_b[0])) if np.linalg.norm(w_b[:2]) > 0.15 else 0.0
         f["wind_L"] = max(-lateral, 0.0) + 0.1 * speed
         f["wind_R"] = max(lateral, 0.0) + 0.1 * speed
         f["vibration_L"], f["vibration_R"] = self.env.vibration

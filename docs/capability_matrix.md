@@ -16,22 +16,22 @@
 | Olfaction (ORNs, antennal lobe) | Two VOC sensors on antenna-like stalks | Filament plume model sampled at the antenna tips | Odor-plume navigation | **Not implemented via the brain** (baseline only) | Any ORN input ignites a self-sustaining runaway state in the LIF model (docs/brain_interface.md §5). Real MOX sensors are also ~1000x slower than ORNs. |
 | Contact chemosensation / taste (sugar, bitter GRNs) | "Taste" of the floor pad under the chassis | Abstract pad sensor (real robot: spectral sensor or dock contacts) → sugar/bitter GRN drive | Stop and dock ("feed") on sugar, refuse bitter and mixed pads | **Directly represented** (validated sugar→MN9 pathway and bitter suppression, Shiu et al. 2024) | The sensor is abstract; MN9 halting stands in for proboscis extension. |
 | Mechanosensation: sound / vibration (Johnston's organ A/B) | Vibration / sound event | Event amplitude L/R → JO-A/B drive | Escape take-off | Pathway directly represented; stimulus abstract | Only the right JO→GF connection is strong in this individual; robot microphone/IMU-vibration processing not modelled. |
-| Mechanosensation: wind / gravity (Johnston's organ C/E) | Apparent airflow at the antennae | Airflow from wind field − own velocity → JO-C/E drive | Recorded; no benchmarked behaviour | Pathway represented, behaviour not established | On a real quadrotor the downwash dominates; output DNs (DNb06…) not linked to a validated wind behaviour. |
+| Mechanosensation: wind / gravity (Johnston's organ C/E) | Apparent airflow at the antennae | Airflow from wind field − own velocity → JO-C/E drive | Encoded in every task; no task has ambient wind, so the input stays near 0 Hz | Pathway represented, behaviour not established | On a real quadrotor the downwash dominates; output DNs (DNb06…) not linked to a validated wind behaviour. |
 | Touch (head bristles, legs) | Bumper / arm contact | MuJoCo contact detection | Back up and turn away (contact retreat reflex) | Functionally approximated, **outside the brain** | Head-bristle input drives grooming DNs in the model, which have no robot analogue; the reflex is conventional (VNC-like). |
 | Temperature, humidity (TRN, HRN) | BME688 temperature/humidity | — | — | Not implemented | These neurons enter the antennal lobe and trigger the same runaway state as olfaction. |
 | Proprioception (leg sensory neurons, VNC) | Wheel encoders, rotor telemetry | Wheel velocity servos, motor model | Low-level control | Functionally approximated, outside the brain | Not in the brain connectome. |
 
 ## Behaviours
 
-| Fly behaviour | Robot behaviour | Task | Status | Who decides | Notes |
+| Fly behaviour | Robot behaviour | Task | Status | Who decides | Measured result (evaluation seeds) and notes |
 |---|---|---|---|---|---|
-| Looming-evoked escape take-off | Rolling robot takes off when a ball looms | `looming_escape` | Directly represented (LPLC2/LC4 → GF) | Brain (GF spike) | Physics: a 1.1 kg quad climbs far slower than a fly jumps |
-| Sound-evoked startle | Vibration → take-off | `vibration_escape` | Directly represented (JO-A/B → GF) | Brain | Stimulus abstract |
-| Object-directed walking | Drive to a beacon | `target_seek` | Directly represented (LC10a → DNa02) | Brain steers; cruise speed is an internal drive | Beacon must be in the camera's view |
-| Collision avoidance | Corridor with pillars | `obstacle_course` | Represented (LC16 → contralateral DNs); sensing approximated | Brain steers; contact reflex is conventional | — |
-| Flight course control | Fly through pillars to a landing beacon | `flight_course` | Brain steering in flight; take-off and landing are mission commands | Brain (yaw), FC (attitude/altitude), mission (take-off/land) | Fly landing pathways not used |
-| Optomotor response | Hold heading with a failed yaw gyro | `yaw_stabilization` | Directly represented (HS/H2 → DNp15) | Brain (yaw torque command) | Works for moderate disturbances only |
-| Feeding initiation / halting | Stop on sugar, not on bitter or mixed | `taste_dock` | **Directly represented, validated pathway** | Brain (MN9) | — |
-| Odor-plume tracking | Find an odor source | `odor_plume` | Not implemented via the brain | Baseline (cast-and-surge) | Negative control with ORN input reported |
+| Looming-evoked escape take-off | Rolling robot takes off when a ball looms | `looming_escape` | Directly represented (LPLC2/LC4 → GF) | Brain (GF spike) | 15/15, 0 false escapes; 0/15 with GF silenced. A 1.1 kg quad climbs far slower than a fly jumps |
+| Sound-evoked startle | Vibration → take-off | `vibration_escape` | Directly represented (JO-A/B → GF) | Brain | 7/7; 0/7 with GF silenced. Stimulus abstract |
+| Object-directed walking | Drive to a beacon | `target_seek` | Directly represented (LC10a → DNa02) | Brain steers; cruise speed is an internal drive | 20/20; LC10a silenced 9/20 (straight-driving level). Beacon must be in the camera's view |
+| Collision avoidance | Corridor with pillars | `obstacle_course` | Represented (LC16 → contralateral DNs); sensing approximated | Brain steers; contact reflex is conventional | Goal 19/20, but collision-free only 9/20 (baseline 16/20) |
+| Flight course control | Fly through pillars to a landing beacon | `flight_course` | Brain steering in flight; take-off and landing are mission commands | Brain (yaw), FC (attitude/altitude), mission (take-off/land) | 10/16 (baseline 12/16). Fly landing pathways not used |
+| Optomotor response | Hold heading with a failed yaw gyro | `yaw_stabilization` | Directly represented (HS/H2 → DNp15) | Brain (yaw torque command) | Weak: 2/12 vs 11/12 for an engineered optomotor controller; drift ~19x lower than with no feedback, abolished by silencing DNp15 |
+| Feeding initiation / halting | Stop on sugar, not on bitter or mixed | `taste_dock` | **Directly represented, validated pathway** | Brain (MN9) | 16/16; without bitter input it docks on the mixed pad in 9/16 |
+| Odor-plume tracking | Find an odor source | `odor_plume` | Not implemented via the brain | Baseline (surge-and-cast) | Baseline 5/12; connectome + ORN input 0/4 (negative control) |
 | Walking ↔ flight transition | Rolling ↔ take-off ↔ landing | all flight tasks | Take-off from rolling triggered by the brain (escape) or the mission; landing by the mission | mixed | Fly take-off is a jump; ours is a rotor climb |
 | Grooming, courtship, egg-laying, learning | — | — | Not implemented | — | No robot analogue or no stable pathway; no plasticity in the model |

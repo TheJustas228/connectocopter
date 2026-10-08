@@ -26,6 +26,7 @@ class BaselineController:
         self.feeding = False
         self.rng = np.random.default_rng(seed)
         self._cast_dir = 1.0
+        self._cast_n = 0
         self._last_hit = -1e9
         self.t = 0.0
         self.tel = None
@@ -37,7 +38,10 @@ class BaselineController:
         self.feeding = False
         self.t = 0.0
         self._cast_dir = 1.0
+        self._cast_n = 0
         self._last_hit = -1e9
+        if hasattr(self, "_cast_t0"):
+            del self._cast_t0
 
     def step(self, f: dict, mode: str) -> Command:
         self.t += self.dt
@@ -52,19 +56,28 @@ class BaselineController:
         if min(aL, aR) > 0.3 and abs(aL - aR) < 0.2:  # obstacle dead ahead: break symmetry (turn left)
             yaw += self.k_obstacle * 0.8
         yaw += self.k_optomotor * (f["hs_L"] - f["hs_R"])
-        # odor: bilateral comparison + cast-and-surge (moth/fly-inspired)
+        # odor: moth-inspired surge-and-cast (Kennedy 1983; Belanger & Willis 1996).  While odor is
+        # sensed (and 0.5 s after) surge upwind with a small bilateral correction; when the plume is lost,
+        # cast crosswind in zigzags of growing width, still biased upwind.
         if self.use_odor and "odor_L" in f:
             c_l, c_r = f["odor_L"], f["odor_R"]
+            up = f.get("wind_from", 0.0)  # bearing of the upwind direction (rad, +left)
             if c_l + c_r > 0.05:
                 self._last_hit = self.t
-                yaw += 2.0 * np.tanh(4 * (c_l - c_r) / (c_l + c_r + 1e-6))
-                yaw += -1.2 * np.tanh(f.get("wind_side", 0.0))  # turn upwind
-            elif self.t - self._last_hit < 4.0:
-                # lost the plume: cast crosswind with growing amplitude
-                if self.rng.random() < self.dt / 1.2:
-                    self._cast_dir *= -1
-                yaw += 1.4 * self._cast_dir
+                self._cast_n = 0
+            since = self.t - self._last_hit
+            if since < 0.5:
+                yaw = 2.5 * np.tanh(1.5 * up) + 0.8 * np.tanh(4 * (c_l - c_r) / (c_l + c_r + 1e-6))
+            elif since < 20.0:
+                # cast crosswind in zigzags of growing width, biased 15 deg upwind
+                period = 1.5 + 0.5 * self._cast_n
+                if not hasattr(self, "_cast_t0") or self.t - self._cast_t0 > period:
+                    self._cast_t0, self._cast_dir, self._cast_n = self.t, -self._cast_dir, self._cast_n + 1
+                target = up + self._cast_dir * np.deg2rad(75)
+                yaw = 2.5 * np.tanh(1.5 * np.arctan2(np.sin(target), np.cos(target)))
                 v *= 0.6
+            else:
+                yaw = 2.5 * np.tanh(1.5 * up)  # long loss: drift upwind and wait for a new encounter
         escape = max(f["loom_L"], f["loom_R"]) > self.loom_thresh or max(f.get("vibration_L", 0), f.get("vibration_R", 0)) > 0.5
         self.feeding = f.get("taste_sugar", 0) > 0.5 and f.get("taste_bitter", 0) < 0.5
         return Command(v_fwd=v, yaw_rate=float(np.clip(yaw, -2.0, 2.0)), escape=bool(escape), halt=self.feeding)

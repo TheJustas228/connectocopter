@@ -110,7 +110,7 @@ encoders:
     offset: 0.3
     scale: 2.0
     max_hz: 100
-    evidence: "JO-C/E neurons sense antennal deflection by wind (Yorozu 2009); used only in the wind-gust experiment"
+    evidence: "JO-C/E neurons sense antennal deflection by wind (Yorozu 2009); no benchmark task has ambient wind, so this input stays near 0 Hz"
   - name: wind_R
     neurons: {cell_sub_class: wind_gravity, side: right}
     feature: wind_R

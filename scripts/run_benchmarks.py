@@ -123,7 +123,7 @@ def wilson(k, n, z=1.96):
     d = 1 + z * z / n
     c = (p + z * z / (2 * n)) / d
     h = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
-    return (round(c - h, 3), round(c + h, 3))
+    return (round(max(0.0, c - h), 3), round(min(1.0, c + h), 3))
 
 
 KEY_METRICS = {
@@ -163,6 +163,10 @@ def summarize():
             vals = [m[key] for m in ms if m.get(key) is not None and not (isinstance(m.get(key), float) and math.isnan(m[key]))]
             if vals:
                 ent[key] = {"mean": round(float(np.mean(vals)), 3), "sd": round(float(np.std(vals)), 3), "n": len(vals)}
+        if t == "obstacle_course":  # reaching the goal does not require zero contacts; report both
+            kc = sum(bool(m["success"]) and m.get("collisions", 0) == 0 for m in ms)
+            ent["collision_free_success"] = kc
+            ent["collision_free_ci95"] = wilson(kc, len(ms))
         if t == "taste_dock":
             for key in ["docked_sugar", "docked_bitter", "docked_mixed"]:
                 ent[key + "_rate"] = round(float(np.mean([bool(m[key]) for m in ms])), 3)
@@ -180,7 +184,10 @@ def summarize():
         pass
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "summary.json").write_text(json.dumps({"meta": meta, "summary": summary}, indent=1))
-    lines = ["# Benchmark summary (evaluation seeds >= 1000)\n", f"Generated {meta['generated']} on {meta.get('gpu', '?')}.\n"]
+    lines = ["# Benchmark summary (evaluation seeds >= 1000)\n", f"Generated {meta['generated']} on {meta.get('gpu', '?')}.\n",
+             "Success: k/n episodes with a Wilson 95% CI.  Other metrics: mean ± SD over the episodes where "
+             "they are defined (e.g. time-to-goal only for successful runs).  Looming escape counts ball trials "
+             "only; catch trials (no ball) are reported as false escapes.  RT× = median simulated / wall-clock time.\n"]
     for t, ctrls in summary.items():
         lines.append(f"\n## {t}\n")
         keys = KEY_METRICS.get(t, [])
@@ -189,6 +196,9 @@ def summarize():
         for c, e in ctrls.items():
             cells = [f"{e[k]['mean']} ± {e[k]['sd']}" if k in e else "–" for k in keys]
             extra = []
+            if "collision_free_success" in e:
+                lo, hi = e["collision_free_ci95"]
+                extra.append(f"collision-free {e['collision_free_success']}/{e['n']} ({lo:.2f}–{hi:.2f})")
             if "false_escapes" in e:
                 extra.append(f"false escapes {e['false_escapes']}/{e['n_catch']}")
             for kk in ["docked_sugar_rate", "docked_bitter_rate", "docked_mixed_rate"]:

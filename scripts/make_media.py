@@ -205,7 +205,7 @@ CLIPS = [
     ("obstacle_course_connectome.json.gz", "Rolling: LC16 → contralateral DNa01/DNa02 steer around pillars", {"t0": 2.0, "t1": 12.0}),
     ("taste_dock_connectome.json.gz", "Taste: sugar GRNs → MN9 → stop and 'feed'; bitter vetoes", {}),
     ("target_seek_connectome.json.gz", "Beacon → LC10a → ipsilateral DNa02 → turn toward it", {}),
-    ("yaw_stabilization_connectome.json.gz", "Yaw gyro failed: HS/H2 → DNp15 optomotor response", {"t0": 3.0, "t1": 11.0}),
+    ("yaw_stabilization_connectome.json.gz", "Yaw gyro failed: HS/H2 → DNp15 optomotor response (weak: this run drifts 307°)", {"t0": 3.0, "t1": 11.0}),
 ]
 
 

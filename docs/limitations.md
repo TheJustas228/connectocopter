@@ -16,7 +16,7 @@
 
 - Rotor aerodynamics are simplified (no ground effect, blade flapping, inflow interaction, prop wash on wheels or sensors, battery sag).
 - The simulated rotor power model is ~30% below the motor manufacturer's measured hover power; simulated flight energies are optimistic. Feasibility numbers in `docs/hardware.md` use manufacturer data.
-- The simulated wheel torque limit (0.25 N m) exceeds the stall torque of the proposed gearmotor (0.13 N m).
+- The simulated wheel torque limit (0.25 N m) exceeds the stall torque of the proposed gearmotor (0.13 N m). Re-running the three rolling tasks with the gearmotor's real limits (30 episodes) changed no outcome and slowed them by about 5% (`results/sensitivity_wheels.json`).
 - The state estimator is ground truth plus noise, not a real EKF.
 - Looming escape: the threat is a black ball on a scripted path; the camera sees only ±49°, so threats from the side or behind cannot be detected.
 - The FPV camera is 160×120 at 50 Hz; real fly photoreceptors are faster and the eye is near-panoramic.

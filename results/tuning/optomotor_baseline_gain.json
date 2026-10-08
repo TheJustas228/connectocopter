@@ -1,0 +1,58 @@
+{
+ "seeds": [
+  0,
+  1,
+  2
+ ],
+ "gains": {
+  "0": {
+   "success": 0,
+   "mean_abs_drift_deg": 4305.2
+  },
+  "25": {
+   "success": 0,
+   "mean_abs_drift_deg": 3879.0
+  },
+  "50": {
+   "success": 0,
+   "mean_abs_drift_deg": 3133.4
+  },
+  "100": {
+   "success": 1,
+   "mean_abs_drift_deg": 895.1
+  },
+  "150": {
+   "success": 1,
+   "mean_abs_drift_deg": 143.2
+  },
+  "200": {
+   "success": 1,
+   "mean_abs_drift_deg": 121.1
+  },
+  "300": {
+   "success": 1,
+   "mean_abs_drift_deg": 101.3
+  },
+  "450": {
+   "success": 2,
+   "mean_abs_drift_deg": 75.7
+  },
+  "650": {
+   "success": 3,
+   "mean_abs_drift_deg": 57.0
+  },
+  "900": {
+   "success": 3,
+   "mean_abs_drift_deg": 52.5
+  },
+  "1300": {
+   "success": 3,
+   "mean_abs_drift_deg": 55.3
+  },
+  "1800": {
+   "success": 3,
+   "mean_abs_drift_deg": 61.1
+  }
+ },
+ "chosen": 900
+}
