@@ -12,7 +12,8 @@ Steps
 -----
 1. ``--brian2``  runs the unmodified ``model.py`` from
    github.com/philshiu/Drosophila_brain_model (pinned commit, MIT) and stores
-   spike rates in results/validation/brian2_*.parquet  (CPU; minutes).
+   spike rates in results/validation/brian2_*.parquet  (CPU; ~3 GB RAM per
+   worker, ~1 min per 1-s trial; use ``--n-proc`` to fit your memory).
 2. ``--port``    runs the same experiments with connectocopter.brain.lif.
 3. ``--compare`` writes results/validation/summary.json and a figure.
 
@@ -55,7 +56,7 @@ def rates_from_spikes(df: pd.DataFrame, n_run: int, t_run_s: float) -> pd.Series
     return df.groupby("flywire_id").size() / (n_run * t_run_s)
 
 
-def run_brian2() -> None:
+def run_brian2(n_proc: int) -> None:
     if not EXT.exists():
         EXT.parent.mkdir(parents=True, exist_ok=True)
         subprocess.check_call(["git", "clone", "https://github.com/philshiu/Drosophila_brain_model.git", str(EXT)])
@@ -64,7 +65,7 @@ def run_brian2() -> None:
     from brian2 import Hz, ms  # noqa: E402
     from model import default_params, run_exp  # noqa: E402  (original code)
 
-    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / "brian2_raw").mkdir(parents=True, exist_ok=True)  # run_exp does not create it
     for hz in RATES_HZ:
         params = dict(default_params)
         params["r_poi"] = hz * Hz
@@ -74,7 +75,7 @@ def run_brian2() -> None:
         run_exp(
             exp_name=f"sugarR_{hz}Hz", neu_exc=SUGAR_R_630, path_res=OUT / "brian2_raw",
             path_comp=DATA / "Completeness_630.csv", path_con=DATA / "Connectivity_630.parquet",
-            params=params, n_proc=-1, force_overwrite=False,
+            params=params, n_proc=n_proc, force_overwrite=False,
         )
         df = pd.read_parquet(OUT / "brian2_raw" / f"sugarR_{hz}Hz.parquet")
         r = rates_from_spikes(df, N_RUN, T_RUN_MS / 1000)
@@ -165,11 +166,13 @@ def main() -> None:
     ap.add_argument("--brian2", action="store_true")
     ap.add_argument("--port", action="store_true")
     ap.add_argument("--compare", action="store_true")
+    ap.add_argument("--n-proc", type=int, default=3,
+                    help="parallel Brian2 workers; each needs ~3 GB RAM (16 workers OOM a 16 GB machine)")
     a = ap.parse_args()
     if not (a.brian2 or a.port or a.compare):
         a.brian2 = a.port = a.compare = True
     if a.brian2:
-        run_brian2()
+        run_brian2(a.n_proc)
     if a.port:
         run_port()
     if a.compare:

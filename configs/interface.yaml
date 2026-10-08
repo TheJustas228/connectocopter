@@ -1,0 +1,193 @@
+# Connectocopter brain-body interface (FlyWire v783 neuron annotations).
+#
+# ENCODERS map a robot sensor feature onto Poisson drive (Hz) of an identified
+# neuron population, exactly like the "activation" experiments of
+# Shiu et al. (2024).  rate = max_hz * clip((feature - offset) / scale, 0, 1)
+#
+# DECODERS read filtered firing rates of identified descending (DN) / motor
+# neurons and turn them into high-level commands for the conventional
+# low-level controller (robot.py).  Nothing downstream of the decoders is
+# attributed to the fly brain.
+#
+# Every entry cites the evidence for the neuron's role; "atlas" refers to
+# results/pathways/atlas.md (in-silico activation of this model).
+
+brain:
+  connectome: "783"
+  control_dt: 0.02          # s of brain/physics time per closed-loop step
+  rate_tau: 0.06            # s, exponential filter on DN firing rates
+
+encoders:
+  # ---- vision (features from connectocopter/sensors/vision.py) ----
+  - name: looming_L
+    neurons: {any: [{cell_type: LPLC2, side: left}, {cell_type: LC4, side: left}]}
+    feature: loom_L
+    offset: 0.6
+    scale: 4.0
+    max_hz: 150
+    evidence: "LPLC2/LC4 encode looming and drive the Giant Fiber (von Reyn 2017; Ache 2019); atlas: LPLC2-L -> DNp01 ~140 Hz"
+  - name: looming_R
+    neurons: {any: [{cell_type: LPLC2, side: right}, {cell_type: LC4, side: right}]}
+    feature: loom_R
+    offset: 0.6
+    scale: 4.0
+    max_hz: 150
+    evidence: "as looming_L"
+  - name: obstacle_L
+    neurons: {cell_type: LC16, side: left}
+    feature: approach_L      # ~1/time-to-contact from the ToF fan (functional stand-in for expansion)
+    offset: 0.5
+    scale: 1.5
+    max_hz: 150
+    evidence: "LC16 responds to frontal looming/expansion and drives avoidance (Wu 2016); atlas: LC16-L -> contralateral DNa01/DNa02/DNa13"
+  - name: obstacle_R
+    neurons: {cell_type: LC16, side: right}
+    feature: approach_R
+    offset: 0.5
+    scale: 1.5
+    max_hz: 150
+    evidence: "as obstacle_L"
+  - name: target_L
+    neurons: {cell_type: LC10a, side: left}
+    feature: target_drive_L
+    offset: 0.0
+    scale: 1.0
+    max_hz: 80
+    evidence: "LC10a is required for visual object pursuit (Ribeiro 2018; Hindmarsh Sten 2021); atlas: LC10a-L -> ipsilateral DNa02"
+  - name: target_R
+    neurons: {cell_type: LC10a, side: right}
+    feature: target_drive_R
+    offset: 0.0
+    scale: 1.0
+    max_hz: 80
+    evidence: "as target_L"
+  - name: yawflow_HS_L
+    neurons: {cell_type: [HSN, HSE, HSS], side: left}
+    feature: hs_L
+    offset: 0.0005
+    scale: 0.006
+    max_hz: 150
+    evidence: "HS cells prefer front-to-back horizontal motion (Schnell 2010) and mediate optomotor yaw responses; atlas: HS-L -> DNa02-L"
+  - name: yawflow_HS_R
+    neurons: {cell_type: [HSN, HSE, HSS], side: right}
+    feature: hs_R
+    offset: 0.0005
+    scale: 0.006
+    max_hz: 150
+    evidence: "as yawflow_HS_L"
+  - name: yawflow_H2_L
+    neurons: {cell_type: H2, side: left}
+    feature: h2_L
+    offset: 0.0005
+    scale: 0.006
+    max_hz: 150
+    evidence: "H2 prefers back-to-front motion (Hausen 1976; Wei 2020); atlas: H2-L -> DNp15-R"
+  - name: yawflow_H2_R
+    neurons: {cell_type: H2, side: right}
+    feature: h2_R
+    offset: 0.0005
+    scale: 0.006
+    max_hz: 150
+    evidence: "as yawflow_H2_L"
+  # ---- mechanosensation (Johnston's organ) ----
+  - name: vibration_L
+    neurons: {cell_sub_class: auditory, side: left}
+    feature: vibration_L
+    offset: 0.0
+    scale: 1.0
+    max_hz: 150
+    evidence: "JO-A/B neurons sense sound/vibration (Kamikouchi 2009); atlas: JO-AB -> DNp01 (Giant Fiber)"
+  - name: vibration_R
+    neurons: {cell_sub_class: auditory, side: right}
+    feature: vibration_R
+    offset: 0.0
+    scale: 1.0
+    max_hz: 150
+    evidence: "as vibration_L"
+  - name: wind_L
+    neurons: {cell_sub_class: wind_gravity, side: left}
+    feature: wind_L
+    offset: 0.3
+    scale: 2.0
+    max_hz: 100
+    evidence: "JO-C/E neurons sense antennal deflection by wind (Yorozu 2009); used only in the wind-gust experiment"
+  - name: wind_R
+    neurons: {cell_sub_class: wind_gravity, side: right}
+    feature: wind_R
+    offset: 0.3
+    scale: 2.0
+    max_hz: 100
+    evidence: "as wind_L"
+  # ---- contact chemosensation ("taste" pads under the chassis) ----
+  - name: taste_sugar
+    neurons: {cell_sub_class: sugar}
+    feature: taste_sugar
+    offset: 0.0
+    scale: 1.0
+    max_hz: 120
+    evidence: "sugar GRNs -> MN9 proboscis motor neuron, validated in Shiu 2024 (91% of 164 predictions)"
+  - name: taste_bitter
+    neurons: {cell_sub_class: bitter}
+    feature: taste_bitter
+    offset: 0.0
+    scale: 1.0
+    max_hz: 120
+    evidence: "bitter GRNs suppress sugar-evoked MN9 activity (Shiu 2024, Fig. 4)"
+
+decoders:
+  steering:
+    # yaw_rate = gain * tanh(sum_w (left - right) / norm); +ve = turn left (CCW)
+    ipsiversive: {DNa02: 1.0, DNa01: 0.6, DNg13: 0.6}
+    contraversive: {DNb06: 0.6}
+    norm_hz: 40.0
+    gain_ground: 1.6      # rad/s
+    gain_flight: 1.2      # rad/s
+    rate_tau: 0.12        # s, slower filter for the (single-cell) steering DNs
+    evidence: "R-L differences in DNa01/DNa02/DNb05/DNg13 predict ipsiversive and DNb06 contraversive turning (Yang 2024; Rayshubskiy 2025)"
+    # Saccade generator (motor-pattern layer, NOT brain output): the normalised
+    # steering signal is leaky-integrated; crossing +-threshold triggers a
+    # ballistic turn of fixed rate/duration in that direction.  Models the
+    # integrate-to-threshold collision-avoidance saccades of flies
+    # (Tammero & Dickinson 2002; Mongeau & Frye 2017).
+    # Disabled by default: in closed loop it was triggered by DN noise and made
+    # flight worse (0/4 vs 3/4 flight-course successes on tuning seeds 0-3).
+    saccade:
+      enabled: false
+      tau: 0.3            # s, leak of the evidence integrator
+      threshold: 0.18     # normalised steer x s
+      rate: 2.2           # rad/s during the saccade
+      duration: 0.35      # s
+      refractory: 0.25    # s after a saccade
+  escape:
+    neurons: {cell_type: DNp01}
+    spikes_to_trigger: 1
+    evidence: "a single Giant Fiber spike triggers the short-mode escape takeoff (von Reyn 2014)"
+  reverse:
+    neurons: {cell_type: MDN}
+    norm_hz: 60.0
+    gain: 0.6             # m/s of reverse speed at norm_hz
+    evidence: "MDN activation drives backward walking (Bidaye 2014)"
+  feeding_halt:
+    neurons: {cell_type: CB0701}   # MN9, proboscis extension motor neuron
+    threshold_hz: 15.0
+    evidence: "MN9 drives proboscis extension; activated by sugar GRNs in the model and in vivo (Shiu 2024; Gordon & Scott 2009)"
+  flight_power:
+    neurons: {cell_type: [DNg02_a, DNg02_b, DNg02_c, DNg02_d, DNg02_e, DNg02_f, DNg02_g, DNg02_h]}
+    note: "recorded and visualised only; no sensory channel used here drives DNg02 in this model (atlas)"
+    evidence: "DNg02 population regulates wingbeat amplitude / flight power (Namiki 2022)"
+
+# Efference copy (motor-to-sensory feedback, not modelled by the LIF brain's
+# 0 Hz baseline): flies suppress HS/H2 motion signals during self-generated,
+# course-changing turns (Kim et al. 2015, 2017; Fenk et al. 2021).
+efference_copy:
+  suppress_during_saccade: true   # HS/H2 drive set to 0 during a saccade (+ hold)
+  hold: 0.10                      # s after the saccade
+  subtract_gain: 0.0              # optional: subtract k * commanded yaw rate from HS/H2 features
+  encoders: [yawflow_HS_L, yawflow_HS_R, yawflow_H2_L, yawflow_H2_R]
+
+# Internal state that the connectome model does not provide.  The LIF model
+# has 0 Hz baseline activity everywhere, so the drive to locomote is supplied
+# here and only *modulated* by the brain (halt, reverse, turn, escape).
+internal_drive:
+  cruise_speed_ground: 0.8   # m/s
+  cruise_speed_flight: 1.2   # m/s
