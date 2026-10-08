@@ -544,6 +544,7 @@ function startLive(task, controller) {
 }
 
 async function setupLive() {
+  if (location.hostname.endsWith('github.io')) return; // static hosting: no live server to probe
   try {
     const info = await (await fetch('api/info')).json();
     if (!info.live) return;
