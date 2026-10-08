@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+
+# Downloaded / derived data (not redistributed; see scripts/download_data.py)
+data/
+!data/README.md
+
+# Local scratch output
+runs/
+*.log
+.ipynb_checkpoints/
+
+# Secrets (never commit)
+.env
+*.pem
+
+# Node / web tooling
+node_modules/
+.playwright-mcp/
