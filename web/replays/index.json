@@ -1,0 +1,74 @@
+[
+ {
+  "file": "flight_course_connectome.json.gz",
+  "label": "Take off, weave through pillars, land at the beacon (connectome)",
+  "task": "flight_course",
+  "controller": "connectome",
+  "seed": 2001,
+  "success": true
+ },
+ {
+  "file": "looming_escape_connectome.json.gz",
+  "label": "Looming ball triggers a Giant Fiber escape takeoff (connectome)",
+  "task": "looming_escape",
+  "controller": "connectome",
+  "seed": 2002,
+  "success": true
+ },
+ {
+  "file": "obstacle_course_connectome.json.gz",
+  "label": "Roll through a pillar corridor to the beacon (connectome)",
+  "task": "obstacle_course",
+  "controller": "connectome",
+  "seed": 2003,
+  "success": true
+ },
+ {
+  "file": "taste_dock_connectome.json.gz",
+  "label": "Stop to 'feed' on sugar; ignore bitter and mixed pads (connectome)",
+  "task": "taste_dock",
+  "controller": "connectome",
+  "seed": 2004,
+  "success": true
+ },
+ {
+  "file": "target_seek_connectome.json.gz",
+  "label": "Turn toward and drive to a glowing beacon (connectome)",
+  "task": "target_seek",
+  "controller": "connectome",
+  "seed": 2005,
+  "success": true
+ },
+ {
+  "file": "yaw_stabilization_connectome.json.gz",
+  "label": "Yaw gyro failed: optic flow -> HS/H2 -> DNp15 holds heading (connectome, failed)",
+  "task": "yaw_stabilization",
+  "controller": "connectome",
+  "seed": 2006,
+  "success": false
+ },
+ {
+  "file": "vibration_escape_connectome.json.gz",
+  "label": "Vibration via Johnston's organ triggers escape (connectome)",
+  "task": "looming_escape",
+  "controller": "connectome",
+  "seed": 2007,
+  "success": true
+ },
+ {
+  "file": "obstacle_course_baseline.json.gz",
+  "label": "Baseline (hand-written rules) on the same corridor (baseline)",
+  "task": "obstacle_course",
+  "controller": "baseline",
+  "seed": 2003,
+  "success": true
+ },
+ {
+  "file": "odor_plume_baseline.json.gz",
+  "label": "Baseline cast-and-surge plume tracking (no connectome olfaction) (baseline)",
+  "task": "odor_plume",
+  "controller": "baseline",
+  "seed": 2008,
+  "success": true
+ }
+]

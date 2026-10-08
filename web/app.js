@@ -226,7 +226,9 @@ async function buildBrain() {
   const q = new Int16Array(xyzBuf);
   const n = meta.n;
   const pos = new Float32Array(n * 3);
-  const s = 50 * 2.2e-6; // nm units -> scene units (~1.2 mm brain -> ~2.6 units)
+  // fit the brain's width (robust 1st-99th percentile of x) to ~2.9 scene units
+  const xs = Float32Array.from({ length: n }, (_, i) => q[3 * i]).sort();
+  const s = 2.9 / Math.max(1, xs[Math.floor(n * 0.99)] - xs[Math.floor(n * 0.01)]);
   for (let i = 0; i < n; i++) {
     pos[3 * i] = q[3 * i] * s;
     pos[3 * i + 1] = -q[3 * i + 1] * s;
@@ -244,10 +246,10 @@ async function buildBrain() {
     uniforms: { uPx: { value: brenderer.getPixelRatio() }, cAnat: { value: COL.neuropil }, cIn: { value: COL.sense }, cOut: { value: COL.act }, cSpike: { value: COL.spike } },
     vertexShader: `attribute float aRole; attribute float aAct; uniform float uPx; varying float vRole; varying float vAct;
       void main(){ vRole=aRole; vAct=aAct; vec4 mv=modelViewMatrix*vec4(position,1.0);
-        gl_PointSize = uPx*(1.3 + aAct*5.0 + step(0.5,aRole)*1.6) * (3.6 / -mv.z); gl_Position=projectionMatrix*mv; }`,
+        gl_PointSize = uPx*(1.6 + aAct*5.0 + step(0.5,aRole)*1.4) * (3.6 / -mv.z); gl_Position=projectionMatrix*mv; }`,
     fragmentShader: `uniform vec3 cAnat; uniform vec3 cIn; uniform vec3 cOut; uniform vec3 cSpike; varying float vRole; varying float vAct;
       void main(){ vec2 d=gl_PointCoord-0.5; float r=dot(d,d); if(r>0.25) discard; float fall=1.0-r*4.0;
-        vec3 base = vRole>1.5 ? cOut : (vRole>0.5 ? cIn : cAnat); float a = vRole>0.5 ? 0.55 : 0.07;
+        vec3 base = vRole>1.5 ? cOut : (vRole>0.5 ? cIn : cAnat); float a = vRole>0.5 ? 0.6 : 0.16;
         vec3 col = mix(base, cSpike, clamp(vAct,0.0,1.0)); float alpha = max(a, vAct*0.95)*fall;
         gl_FragColor = vec4(col*alpha, alpha); }`,
   });
@@ -379,7 +381,11 @@ function show(i) {
 async function loadReplay(file) {
   state.playing = false;
   $('play').textContent = 'Play';
-  const r = await (await fetch(`replays/${file}`)).json();
+  const res = await fetch(`replays/${file}`);
+  if (!res.ok) throw new Error(`replay ${file}: HTTP ${res.status}`);
+  const r = file.endsWith('.gz')
+    ? await new Response(res.body.pipeThrough(new DecompressionStream('gzip'))).json()
+    : await res.json();
   state.replay = r;
   state.simT = 0;
   lastBrainIdx = -1;
@@ -397,26 +403,35 @@ async function loadReplay(file) {
   $('outcome').innerHTML = `<b>Outcome:</b> <span class="${ok ? 'ok' : 'fail'}">${ok ? 'task completed' : 'task failed'}</span>${r.outcome_note ? ' &nbsp;' + r.outcome_note : ''}`;
   show(0);
   const f0 = r.frames[0];
-  camera.position.set(f0.pos[0] - 1.6, 1.4, -(f0.pos[1]) + 1.6);
-  controls.target.set(f0.pos[0], 0.2, -f0.pos[1]);
+  camera.position.set(f0.pos[0] - 1.6, 1.0, -(f0.pos[1]) + 1.2);
+  _look.set(f0.pos[0], 0.1, -f0.pos[1]);
+  camYaw = null;
   state.playing = true;
   $('play').textContent = 'Pause';
 }
 
 // follow camera (positions in three.js coordinates: x, z, -y)
 const _v = new THREE.Vector3(), _goal = new THREE.Vector3();
+const _look = new THREE.Vector3();
+let camYaw = null;
 function followCam(dt) {
   const f = state.replay && state.replay.frames[state.idx];
   if (!f) return;
   const [x, y, z] = f.pos;
   const q = f.quat;
   const yaw = Math.atan2(2 * (q[0] * q[3] + q[1] * q[2]), 1 - 2 * (q[2] * q[2] + q[3] * q[3]));
-  _v.set(x, z, -y);
-  const back = 1.9, up = 1.1;
-  _goal.set(x - back * Math.cos(yaw), z + up, -(y - back * Math.sin(yaw)));
-  const k = 1 - Math.exp(-dt * 3);
+  // smooth the heading so fast turns do not whip the camera around
+  if (camYaw === null) camYaw = yaw;
+  let dy = yaw - camYaw;
+  dy = Math.atan2(Math.sin(dy), Math.cos(dy));
+  camYaw += dy * (1 - Math.exp(-dt * 2.5));
+  _v.set(x, z - 0.05, -y);
+  const back = 1.3, up = 0.62;
+  _goal.set(x - back * Math.cos(camYaw), z + up, -(y - back * Math.sin(camYaw)));
+  const k = 1 - Math.exp(-dt * 6);
   camera.position.lerp(_goal, k);
-  controls.target.lerp(_v, k * 1.5 > 1 ? 1 : k * 1.5);
+  _look.lerp(_v, k);
+  camera.lookAt(_look);
 }
 
 function resize() {
@@ -445,7 +460,11 @@ function tick(now) {
     } else if (i !== state.idx) show(i);
   }
   if (state.follow) followCam(dt);
-  controls.update();
+  else {
+    const f = r && r.frames[state.idx];
+    if (f) controls.target.set(f.pos[0], f.pos[2], -f.pos[1]);
+    controls.update();
+  }
   if (!reduceMotion) brain.pivot.rotation.y = Math.sin(now / 9000) * 0.45;
   renderer.render(scene, camera);
   brenderer.render(bscene, bcam);
@@ -469,11 +488,13 @@ $('speed').addEventListener('change', (e) => { state.speed = +e.target.value; })
 for (const [id, follow] of [['cam-follow', true], ['cam-free', false]]) {
   $(id).addEventListener('click', () => {
     state.follow = follow;
+    controls.enabled = !follow;
+    if (!follow) { const f = state.replay && state.replay.frames[state.idx]; if (f) controls.target.set(f.pos[0], f.pos[2], -f.pos[1]); }
     $('cam-follow').classList.toggle('on', follow); $('cam-follow').setAttribute('aria-pressed', follow);
     $('cam-free').classList.toggle('on', !follow); $('cam-free').setAttribute('aria-pressed', !follow);
   });
 }
-controls.addEventListener('start', () => { if (state.follow) $('cam-free').click(); });
+controls.enabled = false;
 
 async function main() {
   buildPathways();
@@ -490,6 +511,16 @@ async function main() {
   const want = new URLSearchParams(location.search).get('episode');
   if (want && list.some((e) => e.file === want)) sel.value = want;
   await loadReplay(sel.value);
+  const params = new URLSearchParams(location.search);
+  if (params.has('t')) {
+    const r = state.replay;
+    const i = Math.min(r.frames.length - 1, Math.round(+params.get('t') / (r.control_dt || 0.02)));
+    state.simT = i * (r.control_dt || 0.02);
+    lastBrainIdx = -1;
+    show(i);
+    if (params.get('paused') === '1') { state.playing = false; $('play').textContent = 'Play'; }
+  }
+  if (params.get('cam') === 'free') $('cam-free').click();
   requestAnimationFrame(tick);
 }
 main().catch((err) => {

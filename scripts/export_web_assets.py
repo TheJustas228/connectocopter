@@ -4,8 +4,9 @@
 * robot.json   -- every visual geom of the simulated robot, read from the
                   compiled MuJoCo model (type, size, local pose, colour), so the
                   browser model is the simulated model.
-* brain.bin    -- FlyWire v783 neuron positions (soma-proximal supervoxel
-                  coordinates from the annotation table), int16 nm/50, x/y/z
+* brain.bin    -- FlyWire v783 neuron positions (a representative supervoxel
+                  per neuron from the annotation table, given in 4x4x40 nm
+                  voxels and converted to nm here), int16 in units of 50 nm, x/y/z
                   interleaved, in model-index order (CC-BY 4.0: Dorkenwald et al.
                   2024; Schlegel et al. 2024).
 * brain.json   -- metadata: count, super-class codes per neuron (uint8 in
@@ -81,7 +82,7 @@ def export_robot() -> None:
 def export_brain() -> None:
     c = get_connectome("783")
     ann = c.annotations
-    xyz = ann[["pos_x", "pos_y", "pos_z"]].to_numpy(dtype=float)
+    xyz = ann[["pos_x", "pos_y", "pos_z"]].to_numpy(dtype=float) * np.array([4.0, 4.0, 40.0])  # voxels -> nm
     ok = np.isfinite(xyz).all(1)
     center = np.nanmedian(xyz[ok], 0)
     q = np.zeros_like(xyz)

@@ -58,7 +58,7 @@ class OdorPlume(Task):
     def telemetry(self, ep):
         f = ep.sensors.features
         return {"odor": round(float(f.get("odor_L", 0) + f.get("odor_R", 0)), 4),
-                "puffs": [[round(float(x), 2), round(float(y), 2)] for x, y, _ in self.plume.pos[::6]]}
+                "puffs": [[round(float(x), 2), round(float(y), 2)] for x, y, _ in self.plume.pos[::14]]}
 
     def metrics(self, ep):
         p = ep.robot.truth()["pos"][:2]
