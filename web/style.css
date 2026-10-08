@@ -1,0 +1,136 @@
+:root {
+  --slide: #121a26;
+  --slide-2: #18222f;
+  --rule: #263345;
+  --ink: #d7dee8;
+  --muted: #8a96a8;
+  --neuropil: #c2408f;
+  --spike: #63e68c;
+  --sense: #8fb8e8;
+  --act: #f2a93b;
+  --danger: #ff6b6b;
+  --r-panel: 10px;
+  --r-ctl: 6px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--slide); color: var(--ink); }
+body {
+  font-family: "Chivo", system-ui, sans-serif;
+  font-size: 15px; line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--sense); }
+a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible {
+  outline: 2px solid var(--act); outline-offset: 2px;
+}
+
+.masthead {
+  display: flex; gap: 32px; align-items: flex-end; justify-content: space-between;
+  padding: 28px 28px 18px; max-width: 1600px; margin: 0 auto;
+}
+.title h1 {
+  margin: 0; font-weight: 800; font-size: clamp(30px, 4vw, 52px); letter-spacing: -0.02em; line-height: 1;
+}
+.lede { margin: 10px 0 0; max-width: 68ch; color: var(--muted); font-weight: 300; font-size: 16px; }
+.picker { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); }
+select, button {
+  font: inherit; color: var(--ink); background: var(--slide-2); border: 1px solid var(--rule);
+  border-radius: var(--r-ctl); padding: 7px 10px;
+}
+.picker select { min-width: 340px; max-width: 46vw; }
+button { cursor: pointer; }
+button.on { border-color: var(--act); color: var(--act); }
+
+.rig {
+  display: grid; gap: 14px; padding: 0 28px 20px; max-width: 1600px; margin: 0 auto;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  grid-template-areas: "arena side" "flow flow" "transport transport" "outcome outcome";
+}
+.arena { grid-area: arena; position: relative; border-radius: var(--r-panel); overflow: hidden; background: #0d131c; min-height: 460px; }
+#scene { display: block; width: 100%; height: 100%; min-height: 460px; }
+.arena-hud { position: absolute; left: 14px; top: 12px; display: flex; gap: 10px; align-items: center; pointer-events: none; }
+.mode {
+  font-weight: 800; font-size: 14px; padding: 3px 10px; border-radius: 999px;
+  background: rgba(242, 169, 59, 0.14); color: var(--act); border: 1px solid rgba(242, 169, 59, 0.5);
+}
+.mode.flight, .mode.takeoff, .mode.landing { background: rgba(143, 184, 232, 0.14); color: var(--sense); border-color: rgba(143, 184, 232, 0.5); }
+.task { color: var(--muted); font-size: 13px; text-shadow: 0 1px 2px #000; }
+.cam-toggle { position: absolute; right: 12px; top: 10px; display: flex; gap: 6px; }
+.cam-toggle button { padding: 4px 9px; font-size: 13px; background: rgba(18, 26, 38, 0.8); }
+
+.side { grid-area: side; display: flex; flex-direction: column; gap: 14px; }
+figure { margin: 0; background: #0d131c; border-radius: var(--r-panel); overflow: hidden; }
+figcaption { padding: 8px 12px; font-size: 12.5px; color: var(--muted); }
+.fpv img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; image-rendering: pixelated; background: #000; }
+.brain canvas { display: block; width: 100%; height: 300px; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; vertical-align: 0; margin-right: 2px; }
+.dot.spike { background: var(--spike); box-shadow: 0 0 6px var(--spike); }
+.dot.anat { background: var(--neuropil); opacity: 0.7; }
+#brainstats { display: block; margin-top: 2px; }
+
+.flow { grid-area: flow; background: #0d131c; border-radius: var(--r-panel); padding: 12px 16px 10px; }
+.flow-head, .pw {
+  display: grid; grid-template-columns: 190px minmax(0, 1fr) minmax(0, 1fr) 210px; gap: 16px; align-items: center;
+}
+.flow-head { font-size: 12.5px; color: var(--muted); padding-bottom: 6px; border-bottom: 1px solid var(--rule); }
+.c-sense { color: var(--sense); }
+.c-in { color: var(--sense); }
+.c-out { color: var(--spike); }
+.c-act { color: var(--act); }
+.pw { padding: 7px 0; border-bottom: 1px solid rgba(38, 51, 69, 0.5); }
+.pw:last-child { border-bottom: 0; }
+.pw .sense b { display: block; font-weight: 600; font-size: 14px; }
+.pw .sense small { color: var(--muted); font-size: 12px; }
+.pw .neurons { font-size: 12px; color: var(--muted); }
+.pw .neurons .who { display: block; margin-bottom: 3px; }
+.bars { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.bar { position: relative; height: 14px; background: var(--slide-2); border-radius: 3px; overflow: hidden; }
+.bar i { position: absolute; top: 0; bottom: 0; width: 0; transition: width 60ms linear; }
+.bar.l i { right: 0; }
+.bar.r i { left: 0; }
+.in .bar i { background: var(--sense); }
+.out .bar i { background: var(--spike); }
+.bar span { position: absolute; top: -1px; font-size: 11px; line-height: 16px; color: var(--ink); padding: 0 4px; mix-blend-mode: difference; }
+.bar.l span { left: 0; }
+.bar.r span { right: 0; }
+.act b { color: var(--act); font-weight: 600; }
+.act { font-size: 13.5px; }
+.pw.quiet { opacity: 0.45; }
+.pw.hot { opacity: 1; }
+.footnote { margin: 8px 0 0; color: var(--muted); font-size: 12px; max-width: 110ch; }
+
+.transport { grid-area: transport; display: flex; gap: 14px; align-items: center; }
+.transport #play { min-width: 76px; }
+#scrub { flex: 1; accent-color: var(--act); }
+.clock { min-width: 72px; text-align: right; }
+.speed { color: var(--muted); font-size: 13px; display: flex; gap: 6px; align-items: center; }
+.outcome { grid-area: outcome; color: var(--muted); font-size: 14px; }
+.outcome b { color: var(--ink); }
+.outcome .ok { color: var(--spike); }
+.outcome .fail { color: var(--danger); }
+
+.colophon { max-width: 1600px; margin: 0 auto; padding: 4px 28px 32px; color: var(--muted); font-size: 12.5px; }
+.colophon p { max-width: 120ch; }
+
+@media (max-width: 1050px) {
+  .rig { grid-template-columns: minmax(0, 1fr); grid-template-areas: "arena" "side" "flow" "transport" "outcome"; padding: 0 16px 16px; }
+  .side { flex-direction: row; }
+  .side figure { flex: 1; }
+  .flow-head, .pw { grid-template-columns: 120px minmax(0, 1fr) minmax(0, 1fr) 120px; gap: 8px; }
+  .masthead { flex-direction: column; align-items: flex-start; padding: 20px 16px 12px; }
+  .picker select { min-width: 0; max-width: 100%; width: 100%; }
+  .picker { width: 100%; }
+  .colophon { padding: 4px 16px 24px; }
+}
+@media (max-width: 640px) {
+  .side { flex-direction: column; }
+  .flow-head { display: none; }
+  .pw { grid-template-columns: 1fr 1fr; }
+  .pw .sense { grid-column: 1 / -1; }
+  .arena, #scene { min-height: 320px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bar i { transition: none; }
+}

@@ -60,8 +60,12 @@ class ConnectomeController:
     def __init__(self, cfg: dict | None = None, seed: int = 0, device: str | None = None,
                  silence: dict | None = None, weights: np.ndarray | None = None,
                  disable_encoders: list[str] | None = None, record_activity: bool = False,
-                 connectome: Connectome | None = None, calibrate: bool = True, label: str | None = None):
-        self.cfg = cfg or load_interface()
+                 connectome: Connectome | None = None, calibrate: bool = True, label: str | None = None,
+                 extra_encoders: list[dict] | None = None, indices: np.ndarray | None = None):
+        import copy as _copy
+        self.cfg = _copy.deepcopy(cfg or load_interface())
+        if extra_encoders:
+            self.cfg["encoders"] = self.cfg["encoders"] + list(extra_encoders)
         self.c = connectome or get_connectome(self.cfg["brain"]["connectome"])
         ann = self.c.annotations
         self.dt = float(self.cfg["brain"]["control_dt"])
@@ -76,7 +80,8 @@ class ConnectomeController:
             silence_idx = np.unique(np.concatenate([resolve(self.c, s) for s in silence.values()]))
         self.silence = silence or {}
         self.brain = LIFBrain(self.c, batch=1, seed=seed, device=device, input_idx=input_idx,
-                              silence_idx=silence_idx, weights=weights)
+                              silence_idx=silence_idx, weights=weights, indices=indices)
+        self.silence_idx = silence_idx if silence_idx is not None else np.array([], dtype=np.int64)
         dec = self.cfg["decoders"]
         side = ann.side.to_numpy()
 
@@ -102,6 +107,8 @@ class ConnectomeController:
         self.mon_idx = np.unique(np.concatenate(list(self.groups.values())))
         self._pos = {k: np.searchsorted(self.mon_idx, v) for k, v in self.groups.items()}
         self.mon_t = torch.as_tensor(self.mon_idx, device=self.brain.device)
+        # silenced read-out neurons cannot drive their (VNC) targets: decode them as silent
+        self.mon_live = (~np.isin(self.mon_idx, self.silence_idx)).astype(float)
         self.rate = np.zeros(len(self.mon_idx))
         self.drive = self.cfg["internal_drive"]
         self.tel = BrainTelemetry()
@@ -110,7 +117,7 @@ class ConnectomeController:
             self.label = label
         self.side_gain = {e["name"]: 1.0 for e in self.encoders}
         self._seed = seed
-        self._weights_tag = "shuffled" if weights is not None else "connectome"
+        self._weights_tag = "shuffled" if (weights is not None or indices is not None) else "connectome"
         self.steer_rate = np.zeros(len(self.mon_idx))
         self._sacc_I = 0.0
         self._sacc_until = -1.0
@@ -234,7 +241,7 @@ class ConnectomeController:
         tel.input_hz = self._encode(feats)
         self.brain.run_ms(self.dt * 1000.0)
         counts = self.brain.read_counts()[0]
-        mon = counts[self.mon_t].float().cpu().numpy()
+        mon = counts[self.mon_t].float().cpu().numpy() * self.mon_live
         tel.total_spikes = int(counts.sum().item())
         if self.record_activity:
             act = torch.nonzero(counts > 0).flatten()

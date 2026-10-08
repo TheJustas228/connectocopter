@@ -36,14 +36,14 @@ encoders:
   - name: obstacle_L
     neurons: {cell_type: LC16, side: left}
     feature: approach_L      # ~1/time-to-contact from the ToF fan (functional stand-in for expansion)
-    offset: 0.5
+    offset: 0.3
     scale: 1.5
     max_hz: 150
     evidence: "LC16 responds to frontal looming/expansion and drives avoidance (Wu 2016); atlas: LC16-L -> contralateral DNa01/DNa02/DNa13"
   - name: obstacle_R
     neurons: {cell_type: LC16, side: right}
     feature: approach_R
-    offset: 0.5
+    offset: 0.3
     scale: 1.5
     max_hz: 150
     evidence: "as obstacle_L"
@@ -137,13 +137,13 @@ encoders:
 decoders:
   steering:
     # yaw_rate = gain * tanh(sum_w (left - right) / norm); +ve = turn left (CCW)
-    ipsiversive: {DNa02: 1.0, DNa01: 0.6, DNg13: 0.6}
+    ipsiversive: {DNa02: 1.0, DNa01: 0.6, DNg13: 0.6, DNp15: 1.0}
     contraversive: {DNb06: 0.6}
     norm_hz: 40.0
     gain_ground: 1.6      # rad/s
     gain_flight: 1.2      # rad/s
     rate_tau: 0.12        # s, slower filter for the (single-cell) steering DNs
-    evidence: "R-L differences in DNa01/DNa02/DNb05/DNg13 predict ipsiversive and DNb06 contraversive turning (Yang 2024; Rayshubskiy 2025)"
+    evidence: "R-L differences in DNa01/DNa02/DNb05/DNg13 predict ipsiversive and DNb06 contraversive turning (Yang 2024; Rayshubskiy 2025). DNp15 (DNHS1) integrates ipsilateral HS and contralateral H2 input, is selective for yaw rotation, and biases steering when perturbed unilaterally (Suver 2016; Erginkaya 2025)"
     # Saccade generator (motor-pattern layer, NOT brain output): the normalised
     # steering signal is leaky-integrated; crossing +-threshold triggers a
     # ballistic turn of fixed rate/duration in that direction.  Models the

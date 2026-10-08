@@ -1,0 +1,59 @@
+# Benchmark protocol.  Evaluation seeds start at 1000; seeds 0-99 were the
+# only ones used while developing/tuning the interface and the baseline.
+seed_start: 1000
+
+tasks:
+  looming_escape:   {n: 30, task: looming.LoomingEscape}
+  vibration_escape: {n: 16, task: looming.LoomingEscape, kwargs: {stimulus: vibration}}
+  target_seek:      {n: 20, task: navigation.TargetSeek}
+  obstacle_course:  {n: 20, task: navigation.ObstacleCourse}
+  flight_course:    {n: 16, task: flight.FlightCourse}
+  taste_dock:       {n: 16, task: taste.TasteDock}
+  yaw_stabilization: {n: 12, task: flight.YawStabilization}
+  odor_plume:       {n: 12, task: odor.OdorPlume}
+
+# controller variants; "tasks: all" or a list
+controllers:
+  connectome:
+    kind: connectome
+    tasks: [looming_escape, vibration_escape, target_seek, obstacle_course, flight_course, taste_dock, yaw_stabilization]
+  baseline:
+    kind: baseline
+    tasks: all
+  baseline_no_optomotor:
+    kind: baseline
+    kwargs: {k_optomotor: 0.0}
+    tasks: [yaw_stabilization]
+  rewired_connectome:
+    kind: connectome
+    rewire_seed: 7
+    tasks: [looming_escape, target_seek, obstacle_course, flight_course, taste_dock, yaw_stabilization]
+  connectome_uncalibrated:
+    kind: connectome
+    calibrate: false
+    tasks: [target_seek, obstacle_course, flight_course, yaw_stabilization]
+  silence_giant_fiber:
+    kind: connectome
+    silence: {GF: {cell_type: DNp01}}
+    tasks: [looming_escape, vibration_escape]
+  silence_LC10a:
+    kind: connectome
+    silence: {LC10a: {cell_type: LC10a}}
+    tasks: [target_seek]
+  silence_DNp15:
+    kind: connectome
+    silence: {DNp15: {cell_type: DNp15}}
+    tasks: [yaw_stabilization]
+  no_optic_flow_input:
+    kind: connectome
+    disable_encoders: [yawflow_HS_L, yawflow_HS_R, yawflow_H2_L, yawflow_H2_R]
+    tasks: [yaw_stabilization]
+  no_bitter_input:
+    kind: connectome
+    disable_encoders: [taste_bitter]
+    tasks: [taste_dock]
+  connectome_with_ORN_input:   # negative control: olfactory runaway (see docs)
+    kind: connectome
+    extra_encoders: odor
+    tasks: [odor_plume]
+    n_override: 4

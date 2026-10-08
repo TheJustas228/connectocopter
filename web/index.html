@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connectocopter viewer</title>
+<meta name="description" content="Watch a whole-brain model of the fruit fly (FlyWire connectome) steer a hybrid quadcopter-rover in simulation, neuron by neuron.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<header class="masthead">
+  <div class="title">
+    <h1>Connectocopter</h1>
+    <p class="lede">A spiking model of the entire fruit-fly brain &mdash; 138,639 neurons wired by the FlyWire connectome &mdash; reads this robot's sensors and drives its wheels and rotors. Every frame below is recorded simulation output.</p>
+  </div>
+  <label class="picker">
+    <span>Episode</span>
+    <select id="episode" aria-label="Choose a recorded episode"></select>
+  </label>
+</header>
+
+<main class="rig">
+  <section class="arena" aria-label="Simulated arena">
+    <canvas id="scene"></canvas>
+    <div class="arena-hud">
+      <div class="mode" id="mode">ground</div>
+      <div class="task" id="taskline"></div>
+    </div>
+    <div class="cam-toggle" role="group" aria-label="Camera">
+      <button id="cam-follow" class="on" aria-pressed="true">Follow</button>
+      <button id="cam-free" aria-pressed="false">Free orbit</button>
+    </div>
+  </section>
+
+  <aside class="side">
+    <figure class="fpv">
+      <img id="fpv" alt="Robot's forward camera view" width="320" height="240">
+      <figcaption>Robot camera (input to the visual pathways)</figcaption>
+    </figure>
+    <figure class="brain">
+      <canvas id="brain"></canvas>
+      <figcaption><span class="dot spike"></span> spiking in the last 20 ms &nbsp; <span class="dot anat"></span> FlyWire neurons <span id="brainstats"></span></figcaption>
+    </figure>
+  </aside>
+
+  <section class="flow" aria-label="Sensor to brain to body">
+    <div class="flow-head">
+      <span class="c-sense">Sensor</span>
+      <span class="c-in">Sensory neurons driven (left | right, Hz)</span>
+      <span class="c-out">Descending / motor neurons (left | right, Hz)</span>
+      <span class="c-act">Command to the body</span>
+    </div>
+    <div id="pathways"></div>
+    <p class="footnote" id="lowlevel">Rotor thrusts, attitude, altitude and wheel speeds are produced by a conventional flight / drive controller from these commands; they are not brain output.</p>
+  </section>
+
+  <section class="transport" aria-label="Playback">
+    <button id="play" aria-label="Play">Play</button>
+    <input id="scrub" type="range" min="0" max="0" value="0" aria-label="Time">
+    <span class="clock" id="clock">0.00 s</span>
+    <label class="speed">Speed
+      <select id="speed"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select>
+    </label>
+  </section>
+
+  <section class="outcome" id="outcome" aria-live="polite"></section>
+</main>
+
+<footer class="colophon">
+  <p>Brain: leaky integrate-and-fire model of Shiu et al. (2024, Nature) on the FlyWire v783 connectome (Dorkenwald et al. 2024; Schlegel et al. 2024; CC-BY 4.0), re-implemented for the GPU. Body: MuJoCo. Source, methods, limitations and benchmark results are in the <a href="https://github.com/TheJustas228/connectocopter">repository</a>.</p>
+</footer>
+<script type="module" src="app.js"></script>
+</body>
+</html>
