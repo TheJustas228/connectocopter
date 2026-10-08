@@ -4,63 +4,63 @@ Rates in Hz, mean over trials; L/R = soma side of the output neuron.
 
 | Input (side) | n | active | GF DNp01 L/R | DNa02 L/R | DNa01 L/R | DNp09 L/R | MDN L/R | DNg02 L/R | MN9 L/R | top DN/MN |
 |---|---|---|---|---|---|---|---|---|---|---|
-| LPLC2 (looming) | left | 108 | 567 | 143/139 | 0/50 | 0/25 | 1/0 | 0/0 | 0/0 | 0/0 | DNp103l 225, DNp04l 173, DNp70l 143, DNp01l 143 |
-| LPLC2 (looming) | right | 102 | 621 | 125/186 | 52/0 | 17/0 | 0/0 | 1/5 | 0/0 | 0/0 | DNp01r 186, DNp103r 184, DNp04r 167, DNp70r 153 |
-| LC4 (looming) | left | 54 | 328 | 88/70 | 0/11 | 0/28 | 0/0 | 0/0 | 0/0 | 0/0 | DNp04l 234, DNp11l 156, DNp02l 154, DNp05l 108 |
-| LC4 (looming) | right | 50 | 343 | 34/74 | 13/0 | 26/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNp04r 199, DNp02r 136, DNp11r 106, DNge119r 91 |
-| LPLC1 (looming, lateral) | left | 68 | 1596 | 0/0 | 2/12 | 2/52 | 6/0 | 1/0 | 0/0 | 0/0 | DNp11l 135, DNp03l 133, DNp06l 114, DNg100r 96 |
-| LPLC1 (looming, lateral) | right | 72 | 10488 | 0/0 | 35/3 | 61/0 | 0/1 | 1/2 | 0/0 | 0/0 | DNg100r 112, DNg100l 100, DNp34l 79, DNg13l 70 |
-| LC16 (frontal looming) | left | 77 | 197 | 0/0 | 0/21 | 0/23 | 0/0 | 0/0 | 0/0 | 0/0 | DNp43l 26, DNa01r 23, DNa13r 22, DNa13r 22 |
-| LC16 (frontal looming) | right | 74 | 524 | 0/0 | 51/4 | 37/0 | 0/0 | 5/8 | 0/0 | 0/0 | DNa13l 53, DNa02l 51, DNa13l 46, DNa01l 37 |
-| LC10a (small object) | left | 115 | 482 | 0/0 | 99/0 | 8/1 | 0/0 | 0/0 | 0/0 | 0/0 | DNae002l 136, DNg111l 106, DNa06l 106, DNa02l 99 |
-| LC10a (small object) | right | 119 | 547 | 0/0 | 0/6 | 2/1 | 0/0 | 0/0 | 0/0 | 37/0 | DNae002r 120, aSP22r 104, DNg111r 98, DNge043r 70 |
-| LC9 | left | 87 | 706 | 0/0 | 4/0 | 10/56 | 45/0 | 2/0 | 0/0 | 0/0 | DNg16r 104, DNg16l 91, DNg100l 91, DNg100r 88 |
-| LC9 | right | 92 | 1009 | 1/1 | 5/68 | 98/0 | 0/76 | 26/20 | 0/0 | 0/0 | DNpe037r 125, DNg100r 114, DNpe024r 110, DNg100l 109 |
-| LC11 (small object) | left | 66 | 487 | 0/0 | 24/46 | 0/1 | 0/0 | 0/0 | 0/0 | 0/0 | DNa02r 46, DNg100r 44, DNp18r 39, DNg100l 32 |
-| LC11 (small object) | right | 61 | 660 | 0/0 | 13/31 | 4/3 | 0/0 | 0/0 | 0/0 | 0/0 | DNg100r 63, DNg100l 48, DNbe001r 36, DNa02r 31 |
-| HS cells (yaw optic flow) | left | 3 | 41 | 0/0 | 15/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNa02l 15, DNp15l 10, DNa11r 6, DNa16l 2 |
-| HS cells (yaw optic flow) | right | 3 | 16 | 0/0 | 0/1 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNp15r 55, DNae002r 6, DNp18r 5, DNae010r 1 |
-| H2 (back-to-front flow) | left | 1 | 197 | 0/0 | 4/2 | 4/3 | 0/0 | 0/0 | 0/0 | 0/0 | DNp15r 38, DNb03r 32, DNb03r 30, DNg41r 30 |
-| H2 (back-to-front flow) | right | 1 | 280 | 0/0 | 0/13 | 0/8 | 0/0 | 0/0 | 0/0 | 0/0 | DNa11r 39, DNp15l 34, DNa06r 23, DNg41l 22 |
-| VS cells (vertical flow) | left | 8 | 22 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNb06l 48, DNp20l 36, DNp22l 9, DNge043l 9 |
-| VS cells (vertical flow) | right | 8 | 30 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNp20r 78, DNb06r 50, DNge043r 17, DNp22r 5 |
+| LPLC2 (looming) | left | 108 | 591 | 111/97 | 0/34 | 0/30 | 1/0 | 0/0 | 0/0 | 0/0 | DNp103l 168, DNp04l 134, DNp01l 111, DNp70l 103 |
+| LPLC2 (looming) | right | 102 | 599 | 90/134 | 43/0 | 30/0 | 0/0 | 0/1 | 0/0 | 0/0 | DNp103r 157, DNp01r 134, DNp04r 130, DNp70r 106 |
+| LC4 (looming) | left | 54 | 306 | 86/46 | 0/14 | 0/30 | 0/0 | 0/0 | 0/0 | 0/0 | DNp04l 169, DNp11l 124, DNp02l 122, DNp05l 92 |
+| LC4 (looming) | right | 50 | 321 | 32/94 | 13/0 | 30/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNp04r 149, DNp02r 111, DNp01r 94, DNp11r 92 |
+| LPLC1 (looming, lateral) | left | 68 | 947 | 0/0 | 0/14 | 2/53 | 5/0 | 0/0 | 0/0 | 0/0 | DNp03l 125, DNp11l 108, DNp06l 102, DNg100r 72 |
+| LPLC1 (looming, lateral) | right | 72 | 1050 | 0/0 | 28/1 | 60/0 | 0/2 | 1/3 | 0/0 | 0/0 | DNg100r 92, DNg100l 86, DNp06r 79, DNp34l 70 |
+| LC16 (frontal looming) | left | 77 | 191 | 0/0 | 0/19 | 0/20 | 0/0 | 0/0 | 0/0 | 0/0 | DNp43l 25, DNa01r 20, DNa13r 20, DNa13r 19 |
+| LC16 (frontal looming) | right | 74 | 456 | 0/0 | 43/2 | 35/0 | 0/0 | 2/4 | 0/0 | 0/0 | DNa13l 45, DNa02l 43, DNa13l 41, DNa01l 35 |
+| LC10a (small object) | left | 115 | 497 | 0/0 | 109/0 | 17/2 | 0/0 | 0/0 | 0/0 | 0/0 | DNae002l 118, DNa02l 109, DNa06l 90, DNg111l 85 |
+| LC10a (small object) | right | 119 | 586 | 0/0 | 0/60 | 3/7 | 0/0 | 0/0 | 0/0 | 22/0 | DNae002r 107, aSP22r 85, DNg111r 80, DNa06r 79 |
+| LC9 | left | 87 | 699 | 0/0 | 6/0 | 3/62 | 57/0 | 4/3 | 0/0 | 0/0 | DNg16r 77, DNg100l 70, DNg100r 69, DNg16l 66 |
+| LC9 | right | 92 | 944 | 9/3 | 21/46 | 86/0 | 0/88 | 21/17 | 0/0 | 0/0 | DNp09r 88, DNa01l 86, DNpe037r 85, DNp05r 82 |
+| LC11 (small object) | left | 66 | 550 | 0/0 | 21/35 | 2/2 | 0/0 | 0/0 | 0/0 | 0/0 | DNg100r 40, DNa02r 35, DNg100l 32, DNp18r 25 |
+| LC11 (small object) | right | 61 | 672 | 0/0 | 20/17 | 16/4 | 0/1 | 0/0 | 0/0 | 0/0 | DNg100r 53, DNg100l 43, DNbe001r 36, DNg97r 33 |
+| HS cells (yaw optic flow) | left | 3 | 41 | 0/0 | 14/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNa02l 14, DNp15l 9, DNa11r 6, DNa16l 2 |
+| HS cells (yaw optic flow) | right | 3 | 16 | 0/0 | 0/1 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNp15r 50, DNae002r 6, DNp18r 5, DNae010r 1 |
+| H2 (back-to-front flow) | left | 1 | 145 | 0/0 | 3/1 | 2/1 | 0/0 | 0/0 | 0/0 | 0/0 | DNp15r 33, DNb03r 27, DNb03r 26, DNg41r 26 |
+| H2 (back-to-front flow) | right | 1 | 239 | 0/0 | 0/12 | 0/6 | 0/0 | 0/0 | 0/0 | 0/0 | DNa11r 36, DNp15l 32, DNg41l 21, DNb03l 19 |
+| VS cells (vertical flow) | left | 8 | 20 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNb06l 43, DNp20l 34, DNp22l 9, DNge043l 9 |
+| VS cells (vertical flow) | right | 8 | 32 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNp20r 66, DNb06r 44, DNge043r 16, DNp22r 5 |
 | R7 photoreceptors | left | 668 | 669 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 |  |
 | R7 photoreceptors | right | 668 | 684 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 |  |
 | R8 photoreceptors | left | 662 | 679 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 |  |
-| R8 photoreceptors | right | 652 | 703 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 |  |
-| ocellar photoreceptors | left | 100 | 145 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNp28l 106, DNp40r 55, DNp22r 54, DNpe017r 46 |
-| ocellar photoreceptors | right | 97 | 123 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNp28r 129, DNpe017l 84, DNp22l 66, DNb06l 48 |
-| ORN DM1 (vinegar) | left | 35 | 10335 | 0/0 | 69/0 | 17/5 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 330, DNb05r 299, DNge037r 174, DNge037l 165 |
-| ORN DM1 (vinegar) | right | 33 | 10332 | 0/0 | 70/0 | 17/5 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 329, DNb05r 300, DNge037r 172, DNge037l 165 |
-| ORN DM4 (vinegar) | left | 20 | 10304 | 0/0 | 69/0 | 17/3 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 328, DNb05r 299, DNge037r 171, DNge037l 164 |
-| ORN DM4 (vinegar) | right | 20 | 10293 | 0/0 | 70/0 | 17/3 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 329, DNb05r 298, DNge037r 173, DNge037l 164 |
-| ORN VA2 | left | 34 | 10329 | 0/0 | 69/0 | 17/5 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 328, DNb05r 297, DNge037r 170, DNge037l 164 |
-| ORN VA2 | right | 33 | 10327 | 0/0 | 69/0 | 17/4 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 328, DNb05r 297, DNge037r 169, DNge037l 164 |
-| ORN DM2 | left | 29 | 10310 | 0/0 | 70/0 | 17/4 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 328, DNb05r 296, DNge037r 171, DNge037l 164 |
-| ORN DM2 | right | 25 | 10289 | 0/0 | 68/0 | 17/4 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 328, DNb05r 296, DNge037r 170, DNge037l 165 |
-| ORN DA2 (geosmin, aversive) | left | 16 | 10288 | 0/0 | 64/0 | 16/4 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 304, DNb05r 273, DNge037r 156, DNge037l 151 |
-| ORN DA2 (geosmin, aversive) | right | 22 | 38 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 |  |
-| sugar GRNs | left | 20 | 356 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 42/75 | CB0700l 115, CB0700r 113, MNx01r 101, DNge031l 82 |
-| sugar GRNs | right | 12 | 40 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNge023r 29, DNge173r 14 |
-| bitter GRNs | left | 21 | 57 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNge067l 14, DNpe007r 8, DNpe007l 2, DNp42l 1 |
+| R8 photoreceptors | right | 652 | 700 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 |  |
+| ocellar photoreceptors | left | 100 | 139 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNp28l 87, DNp22r 55, DNp40r 52, DNpe017r 41 |
+| ocellar photoreceptors | right | 97 | 121 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNp28r 103, DNpe017l 78, DNp22l 69, DNb06l 40 |
+| ORN DM1 (vinegar) | left | 35 | 8428 | 0/0 | 53/0 | 22/9 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 209, DNb05r 182, DNge037r 105, DNge037l 102 |
+| ORN DM1 (vinegar) | right | 33 | 8449 | 0/0 | 53/0 | 22/7 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 208, DNb05r 182, DNge037r 105, DNge037l 102 |
+| ORN DM4 (vinegar) | left | 20 | 8387 | 0/0 | 52/1 | 21/7 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 207, DNb05r 181, DNge037r 106, DNge037l 100 |
+| ORN DM4 (vinegar) | right | 20 | 8401 | 0/0 | 52/1 | 20/7 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 206, DNb05r 182, DNge037r 105, DNge037l 102 |
+| ORN VA2 | left | 34 | 8429 | 0/0 | 51/1 | 22/8 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 207, DNb05r 178, DNge037r 104, DNge037l 101 |
+| ORN VA2 | right | 33 | 8432 | 0/0 | 53/1 | 19/8 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 207, DNb05r 181, DNge037r 105, DNge037l 100 |
+| ORN DM2 | left | 29 | 8410 | 0/0 | 54/1 | 19/7 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 206, DNb05r 178, DNge037r 103, DNge037l 101 |
+| ORN DM2 | right | 25 | 8402 | 0/0 | 50/0 | 20/9 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 207, DNb05r 180, DNge037r 104, DNge037l 102 |
+| ORN DA2 (geosmin, aversive) | left | 16 | 8375 | 0/0 | 46/0 | 17/6 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 193, DNb05r 168, DNge037r 96, DNge037l 93 |
+| ORN DA2 (geosmin, aversive) | right | 22 | 37 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 |  |
+| sugar GRNs | left | 20 | 343 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 40/63 | CB0700l 71, CB0700r 65, DNge059l 63, CB0701r 63 |
+| sugar GRNs | right | 12 | 40 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNge023r 25, DNge173r 13 |
+| bitter GRNs | left | 21 | 57 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNge067l 13, DNpe007r 8, DNpe007l 1, DNp42l 1 |
 | bitter GRNs | right | 21 | 34 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNpe007r 9 |
-| water GRNs | left | 15 | 66 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNg67l 60, DNg67r 57, DNp44l 46, DNp58l 29 |
+| water GRNs | left | 15 | 62 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNg67l 54, DNg67r 51, DNp44l 34, DNp58l 19 |
 | water GRNs | right | 15 | 21 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 |  |
-| JO wind/gravity (JO-CE) | left | 249 | 539 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNbe001l 62, DNp18l 44, DNb06l 38, DNge091l 38 |
-| JO wind/gravity (JO-CE) | right | 232 | 529 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNb06r 80, DNp19r 72, DNg29r 67, DNp73r 63 |
-| JO auditory (JO-AB) | left | 212 | 290 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNp12l 67, DNb05l 57, DNg56l 38, DNg29l 30 |
-| JO auditory (JO-AB) | right | 175 | 325 | 0/52 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNg29r 87, DNg24r 64, DNp01r 52, DNb06r 36 |
-| head bristles | left | 150 | 696 | 0/0 | 14/0 | 0/7 | 0/0 | 0/0 | 0/0 | 0/0 | DNge036l 267, DNg85l 253, DNg48r 227, DNg84l 224 |
-| head bristles | right | 155 | 542 | 0/0 | 0/3 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNg84r 199, DNg35r 182, DNge122l 138, DNg85r 131 |
-| heating TRNs | left | 3 | 10306 | 0/0 | 69/0 | 14/6 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 328, DNb05r 293, DNge037r 170, DNge037l 164 |
-| heating TRNs | right | 4 | 10279 | 0/0 | 68/0 | 17/4 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 324, DNb05r 300, DNge037r 170, DNge037l 162 |
-| cooling TRNs | left | 6 | 10255 | 0/0 | 66/0 | 17/5 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 315, DNb05r 286, DNge037r 164, DNge037l 158 |
-| cooling TRNs | right | 7 | 10287 | 0/0 | 58/0 | 15/3 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 281, DNb05r 256, DNge037r 147, DNge037l 140 |
-| humid HRNs | left | 6 | 10287 | 0/0 | 68/0 | 15/5 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 326, DNb05r 294, DNge037r 169, DNge037l 163 |
-| humid HRNs | right | 7 | 10326 | 0/0 | 64/1 | 16/4 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 318, DNb05r 292, DNge037r 167, DNge037l 159 |
-| dry HRNs | left | 15 | 10325 | 0/0 | 68/0 | 16/4 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 324, DNb05r 293, DNge037r 170, DNge037l 164 |
-| dry HRNs | right | 14 | 10315 | 0/0 | 66/0 | 18/4 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 321, DNb05r 292, DNge037r 169, DNge037l 160 |
-| P9 / DNp09 (forward walk) | left | 1 | 19 | 0/0 | 9/0 | 0/0 | 95/0 | 0/0 | 0/0 | 0/0 | DNp09l 95, DNa06l 11, DNa11l 11, CB0901l 11 |
-| P9 / DNp09 (forward walk) | right | 1 | 76 | 0/0 | 0/28 | 0/0 | 0/98 | 0/0 | 0/0 | 0/0 | DNp09r 98, DNa06r 40, CB0706r 38, CB0901r 28 |
-| MDN (backward walk) | left | 2 | 12 | 0/0 | 0/0 | 0/0 | 0/0 | 99/0 | 0/0 | 0/0 | MDNl 101, MDNl 97, DNge124r 32, DNg88r 27 |
-| MDN (backward walk) | right | 2 | 6 | 0/0 | 0/0 | 0/0 | 0/0 | 0/99 | 0/0 | 0/0 | MDNr 101, MDNr 98, DNg88l 29, DNge124l 24 |
+| JO wind/gravity (JO-CE) | left | 249 | 534 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNbe001l 63, DNp18l 46, DNb06l 42, DNge091l 37 |
+| JO wind/gravity (JO-CE) | right | 232 | 511 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNb06r 67, DNg29r 65, DNp19r 61, DNp73r 58 |
+| JO auditory (JO-AB) | left | 212 | 289 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNp12l 58, DNb05l 51, DNg56l 31, DNg29l 30 |
+| JO auditory (JO-AB) | right | 175 | 316 | 0/50 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNg29r 76, DNg24r 58, DNp01r 50, DNb06r 35 |
+| head bristles | left | 150 | 654 | 0/0 | 17/0 | 0/8 | 0/0 | 0/0 | 0/0 | 0/0 | DNge036l 194, DNg85l 185, DNg48r 179, DNg35l 174 |
+| head bristles | right | 155 | 528 | 0/0 | 0/6 | 0/0 | 0/0 | 0/0 | 0/0 | 0/0 | DNg84r 154, DNg35r 153, DNg15l 132, DNge132r 119 |
+| heating TRNs | left | 3 | 8387 | 0/0 | 53/1 | 18/8 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 209, DNb05r 178, DNge037r 102, DNge037l 101 |
+| heating TRNs | right | 4 | 8392 | 0/0 | 50/2 | 21/7 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 204, DNb05r 181, DNge037r 106, DNge037l 102 |
+| cooling TRNs | left | 6 | 8370 | 0/0 | 48/1 | 18/8 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 198, DNb05r 173, DNge037r 101, DNge037l 98 |
+| cooling TRNs | right | 7 | 8334 | 0/0 | 35/0 | 13/4 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 140, DNb05r 120, DNge037r 70, DNg35r 68 |
+| humid HRNs | left | 6 | 8365 | 0/0 | 51/1 | 19/8 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 206, DNb05r 177, DNge037r 102, DNge037l 100 |
+| humid HRNs | right | 7 | 8382 | 0/0 | 48/0 | 20/7 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 197, DNb05r 176, DNge037r 102, DNge037l 97 |
+| dry HRNs | left | 15 | 8407 | 0/0 | 53/0 | 18/7 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 203, DNb05r 177, DNge037r 104, DNge037l 100 |
+| dry HRNs | right | 14 | 8404 | 0/0 | 52/1 | 19/8 | 0/0 | 0/0 | 0/0 | 0/0 | DNb05l 202, DNb05r 177, DNge037r 103, DNge037l 99 |
+| P9 / DNp09 (forward walk) | left | 1 | 19 | 0/0 | 9/0 | 0/0 | 95/0 | 0/0 | 0/0 | 0/0 | DNp09l 95, DNa06l 12, CB0901l 11, DNa11l 10 |
+| P9 / DNp09 (forward walk) | right | 1 | 75 | 0/0 | 0/24 | 0/0 | 0/98 | 0/0 | 0/0 | 0/0 | DNp09r 98, DNa06r 35, CB0706r 34, CB0901r 26 |
+| MDN (backward walk) | left | 2 | 12 | 0/0 | 0/0 | 0/0 | 0/0 | 99/0 | 0/0 | 0/0 | MDNl 101, MDNl 97, DNge124r 31, DNg88r 26 |
+| MDN (backward walk) | right | 2 | 6 | 0/0 | 0/0 | 0/0 | 0/0 | 0/99 | 0/0 | 0/0 | MDNr 101, MDNr 98, DNg88l 27, DNge124l 23 |

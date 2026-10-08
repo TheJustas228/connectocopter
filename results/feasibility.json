@@ -1,0 +1,61 @@
+{
+ "checked": "2026-10-08",
+ "total_mass_g": 1109,
+ "mass_from_estimates_g": 154,
+ "total_cost_usd": 1893,
+ "cost_verified_items_usd": 1620,
+ "avionics_power_w": 26.3,
+ "max_static_thrust_g": 11272,
+ "lipo": {
+  "flight": {
+   "auw_g": 1109,
+   "thrust_per_motor_g": 277,
+   "hover_throttle_pct": 26.2,
+   "prop_power_w": 201,
+   "total_power_w": 227,
+   "hover_minutes": 10.3,
+   "thrust_to_weight": 10.16,
+   "hover_current_a": 10.2
+  },
+  "rolling": {
+   "speed_m_s": 0.8,
+   "wheel_power_w": 3.9,
+   "total_power_w": 30.2,
+   "minutes": 78,
+   "range_km": 3.7
+  }
+ },
+ "liion": {
+  "flight": {
+   "auw_g": 1193,
+   "thrust_per_motor_g": 298,
+   "hover_throttle_pct": 27.1,
+   "prop_power_w": 221,
+   "total_power_w": 247,
+   "hover_minutes": 18.8,
+   "thrust_to_weight": 9.45,
+   "hover_current_a": 11.1
+  },
+  "rolling": {
+   "speed_m_s": 0.8,
+   "wheel_power_w": 3.9,
+   "total_power_w": 30.2,
+   "minutes": 154,
+   "range_km": 7.4
+  }
+ },
+ "simulated_mass_kg": 1.171,
+ "simulated_thrust_limit_per_rotor_g": 1631,
+ "energy_per_m_J": {
+  "flying_1.2m_s": 189.2,
+  "rolling_0.8m_s": 37.8
+ },
+ "compute_estimate": {
+  "measured_rtx3070_ms_per_1.8ms_block": 0.16,
+  "bandwidth_ratio": 4.38,
+  "orin_nx_estimate_ms_per_block": 0.7,
+  "realtime_factor_estimate": 2.57,
+  "model_memory_mb": 121,
+  "note": "estimate only; not measured on Jetson hardware"
+ }
+}

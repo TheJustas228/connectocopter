@@ -57,6 +57,10 @@ except Exception:  # pragma: no cover
     _HAVE_TRITON = False
 
 
+# Bump whenever simulation semantics change (invalidates cached calibrations).
+ENGINE_VERSION = "2"  # v2: Brian2 conditional-write semantics during refractoriness
+
+
 @dataclass(frozen=True)
 class LIFParams:
     v_0: float = -52.0  # mV, resting potential

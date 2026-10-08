@@ -18,7 +18,7 @@ import torch
 import yaml
 
 from ..brain.connectome import Connectome, load_connectome
-from ..brain.lif import LIFBrain
+from ..brain.lif import ENGINE_VERSION, LIFBrain
 from ..brain.populations import resolve
 from ..robot.robot import Command
 
@@ -170,7 +170,7 @@ class ConnectomeController:
         enc = json.dumps([(e["name"], e["neurons"], e["feature"]) for e in self.encoders], sort_keys=True, default=str)
         dec = json.dumps(self.cfg["decoders"]["steering"], sort_keys=True)
         sil = json.dumps(self.silence, sort_keys=True, default=str)
-        h = hashlib.sha1((enc + dec + sil + self._weights_tag).encode()).hexdigest()[:12]
+        h = hashlib.sha1((enc + dec + sil + self._weights_tag + ENGINE_VERSION).encode()).hexdigest()[:12]
         return h
 
     def _mean_steer(self, feats: dict, seconds: float, seed: int) -> float:

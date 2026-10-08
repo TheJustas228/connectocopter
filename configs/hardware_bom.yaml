@@ -1,0 +1,301 @@
+# Proposed real-world Connectocopter (NOT built; no purchases made).
+# Prices/specs checked 2026-10-08 on the listed pages.  "verified: false" marks
+# values that are engineering estimates (no product page with that number).
+# category: A = commercially available & directly suitable
+#           B = needs custom integration / fabrication
+checked: "2026-10-08"
+
+parts:
+  - name: Frame
+    maker: iFlight
+    model: Chimera7 Pro V2 O4 frame kit (7.5", 327 mm wheelbase)
+    qty: 1
+    mass_g: 175        # bare carbon frame without TPU parts (RotorXpress listing); kit with TPU 355 g
+    price_usd: 109.99
+    power_w: 0
+    interface: "30x30 stack, 16/19 mm motor mounts, 6 mm arms"
+    url: https://shop.iflight.com/Chimera7-O4-Frame-Kit-Pro2286
+    category: A
+    verified: true
+    why: "Stiff long-range 7-inch frame with room for a 30x30 stack, a top-mounted battery and a Jetson-sized compute module"
+  - name: Flight motors
+    maker: Hobbywing
+    model: XRotor 2807 1300KV
+    qty: 4
+    mass_g: 59
+    price_usd: 24.99
+    power_w: null      # see thrust/power table below
+    interface: "3-phase, 19x19 M3, 5 mm shaft"
+    url: https://www.hobbywing.com/en/products/-xrotor2807
+    price_url: https://www.hobbywingdirect.com/products/xrotor-fpv-2807-motors
+    category: A
+    verified: true
+    why: "Manufacturer publishes a full 6S thrust/power table with HQ 7x4x3 props (2,818 g max thrust per motor)"
+  - name: Propellers
+    maker: HQProp
+    model: DP 7x4x3 (set of 4, 2 CW + 2 CCW)
+    qty: 1
+    mass_g: 38.8        # 4 x 9.7 g
+    price_usd: 3.82
+    power_w: 0
+    interface: "5 mm shaft"
+    url: https://www.readymaderc.com/products/details/hq-prop-7X4X3-light-grey-pc-propeller
+    category: A
+    verified: true
+    why: "The propeller used in the motor's published thrust table"
+  - name: 4-in-1 ESC
+    maker: T-Motor
+    model: F55A Pro II 4-in-1 (55 A continuous, 75 A burst, 3-6S)
+    qty: 1
+    mass_g: 17.5
+    price_usd: 92.02
+    power_w: null
+    interface: "DShot, ESC telemetry (for ArduPilot RPM notch filtering)"
+    url: https://tmotorhobby.com/goods.php?id=821
+    category: A
+    verified: true
+    why: "Current rating covers the motor's 56.7 A peak at full throttle with burst margin; telemetry supports ArduPilot's harmonic notch"
+  - name: Flight controller
+    maker: Matek Systems
+    model: H743-SLIM V3 (STM32H743, ICM42688-P + ICM42605, DPS310)
+    qty: 1
+    mass_g: 7
+    price_usd: 96.99
+    power_w: 1.0
+    interface: "ArduPilot target MATEKH743; UART/MAVLink to the companion computer"
+    url: https://bouldermultirotor.com/product/matek-systems-h743-slim-v3-flight-controller/
+    category: A
+    verified: true
+    why: "Runs the conventional low-level controller (attitude/rate/altitude), dual IMU = the haltere analogue"
+  - name: RC receiver (safety pilot link)
+    maker: RadioMaster
+    model: RP3 ExpressLRS 2.4 GHz diversity
+    qty: 1
+    mass_g: 4.6
+    price_usd: 22.99
+    power_w: 0.5
+    interface: "CRSF"
+    url: https://www.defiancerc.com/products/radiomaster-rp3-expresslrs-2-4ghz-nano-receiver
+    category: A
+    verified: true
+    why: "Manual override / kill switch, required for safe testing"
+  - name: Companion computer (brain)
+    maker: NVIDIA
+    model: Jetson Orin NX 16GB module (1024-core Ampere GPU, 10-25 W; 40 W Super mode)
+    qty: 1
+    mass_g: 26
+    price_usd: 797.99
+    power_w: 20
+    interface: "PCIe/USB/CSI via carrier"
+    url: https://www.waveshare.com/jetson-orin-nx.htm?sku=24434
+    category: A
+    verified: true
+    why: "Smallest CUDA platform able to hold the 138k-neuron / 15.1M-connection model (~0.3 GB) and run it near real time (estimate, see compute section)"
+  - name: Jetson carrier board
+    maker: WeAct Studio
+    model: N006 carrier for Orin NX (90x60 mm, 16-28 V input)
+    qty: 1
+    mass_g: 35
+    price_usd: 130
+    power_w: 1.0
+    interface: "2x MIPI CSI, 3x USB 3.2, GbE, I2C/UART/CAN, XT30 6S input"
+    url: https://www.hackster.io/news/the-perfect-jetson-carrier-board-for-drones-and-robotics-fc8ec4749a7e
+    category: A
+    verified: false     # price from news article (AliExpress ~$130); mass is an estimate
+    why: "Credit-card-size carrier that takes 6S directly"
+  - name: Jetson heatsink + fan
+    maker: custom / low-profile aftermarket
+    model: low-profile finned heatsink with 30 mm fan
+    qty: 1
+    mass_g: 45
+    price_usd: 25
+    power_w: 0.5
+    interface: "-"
+    url: null
+    category: B
+    verified: false
+    why: "Orin NX needs active cooling at 15-25 W; the stock dev-kit cooler is too heavy"
+  - name: Machine-vision camera ("compound eye")
+    maker: Arducam
+    model: OV9281 1 MP global-shutter mono (B0223), 110 deg HFOV, up to 240 fps
+    qty: 1
+    mass_g: 11
+    price_usd: 51.99
+    power_w: 0.5
+    interface: "2-lane MIPI CSI-2 (Jetson)"
+    url: https://www.arducam.com/arducam-ov9281-mipi-1mp-monochrome-global-shutter-ir-camera-module-for-jetson-board.html
+    category: A
+    verified: true
+    why: "Global shutter and high frame rate suit the elementary-motion-detector front end (looming, optic flow)"
+  - name: Multizone ToF ranging fan
+    maker: Pololu / ST
+    model: VL53L8CX carrier (#3419), 8x8 zones, 4 m, 45 deg H/V
+    qty: 3
+    mass_g: 0.7
+    price_usd: 24.95
+    power_w: 0.5
+    interface: "I2C/SPI"
+    url: https://www.pololu.com/product/3419
+    category: A
+    verified: true
+    why: "Three sensors cover the simulated +-60 deg approach-rate fan that drives LC16"
+  - name: Downward optical flow + range
+    maker: MicoAir
+    model: MTF-02 optical flow & ToF (2.5 m, indoor)
+    qty: 1
+    mass_g: 1.5
+    price_usd: 19.00
+    power_w: 0.2
+    interface: "UART MAVLink (ArduPilot)"
+    url: https://robofusion.ca/products/micoair-optical-flow-lidar-sensor-mtf-02-compatible-with-ardupilot-px4-inav
+    category: A
+    verified: true
+    why: "Velocity/altitude for the flight controller's state estimate (replaces the simulator's truth+noise)"
+  - name: Odor / VOC sensors (antenna tips)
+    maker: SparkFun / Bosch
+    model: BME688 environmental sensor (Qwiic)
+    qty: 2
+    mass_g: 2.0
+    price_usd: 24.95
+    power_w: 0.05
+    interface: "I2C"
+    url: https://www.sparkfun.com/sparkfun-environmental-sensor-bme688-qwiic.html
+    category: A
+    verified: true
+    why: "Bilateral 'antennae' for VOC + temperature + humidity; seconds-scale response is a known limitation"
+  - name: Wheel gearmotors
+    maker: Pololu
+    model: 100:1 Micro Metal Gearmotor HPCB 12V, extended shaft (#3052); 330 rpm, 0.13 N m stall
+    qty: 4
+    mass_g: 10
+    price_usd: 27.45
+    power_w: 1.0
+    interface: "brushed DC + 12 CPR magnetic encoder"
+    url: https://www.pololu.com/product/3052
+    category: A
+    verified: true      # price/speed/torque verified; mass ~9.5-10.5 g is Pololu's typical (not on this page)
+    why: "4 independently driven wheels; 80 mm wheel -> 1.38 m/s top speed, above the 0.8 m/s cruise"
+  - name: Wheel encoders
+    maker: Pololu
+    model: Magnetic encoder pair kit for micro metal gearmotors (12 CPR)
+    qty: 2
+    mass_g: 2.0
+    price_usd: 8.95
+    power_w: 0.1
+    interface: "quadrature"
+    url: https://www.pololu.com/category/178/micro-metal-gearmotors
+    category: A
+    verified: false
+    why: "Closed-loop wheel-speed control as in the simulator's velocity servos"
+  - name: Wheels
+    maker: Pololu
+    model: Wheel 80x10 mm pair (#1430), silicone tyres
+    qty: 2
+    mass_g: 20          # per pair, estimate
+    price_usd: 8.75
+    power_w: 0
+    interface: "3 mm D shaft press fit"
+    url: https://www.pololu.com/product/1430
+    category: A
+    verified: true      # price verified; mass estimated
+    why: "Matches the simulated 40 mm wheel radius"
+  - name: Gearmotor brackets
+    maker: Pololu
+    model: Micro Metal Gearmotor Bracket Pair (#989)
+    qty: 2
+    mass_g: 2.0
+    price_usd: 2.95
+    power_w: 0
+    interface: "-"
+    url: https://www.pololu.com/product/989
+    category: A
+    verified: true
+    why: "Mounts gearmotors to the custom wheel struts"
+  - name: Wheel motor drivers
+    maker: Pololu / TI
+    model: DRV8835 dual motor driver carrier (#2135), 1.2 A/ch, <= 11 V
+    qty: 2
+    mass_g: 1.0
+    price_usd: 6.95
+    power_w: 0.1
+    interface: "PWM from Jetson/FC GPIO"
+    url: https://www.pololu.com/product/2135
+    category: A
+    verified: true
+    why: "Two channels per board -> four independent wheels"
+  - name: 6S-to-10 V regulator for wheel drives
+    maker: custom / off-the-shelf buck
+    model: 2-3 A step-down converter, 10 V output
+    qty: 1
+    mass_g: 4
+    price_usd: 15
+    power_w: 0.5
+    interface: "-"
+    url: null
+    category: B
+    verified: false
+    why: "DRV8835 motor supply is limited to 11 V"
+  - name: Wheel struts / landing gear
+    maker: custom
+    model: CF-nylon or carbon struts, 4x, with gearmotor mounts
+    qty: 1
+    mass_g: 24
+    price_usd: 40
+    power_w: 0
+    interface: "bolts to frame arms/bottom plate"
+    url: null
+    category: B
+    verified: false
+    why: "No commercial FPV frame has wheel mounts; doubles as landing gear"
+  - name: Pad / contact chemosensor ("taste")
+    maker: Adafruit / ams
+    model: AS7341 10-channel spectral sensor breakout, facing down
+    qty: 1
+    mass_g: 1.5
+    price_usd: 15.95
+    power_w: 0.1
+    interface: "I2C"
+    url: https://www.adafruit.com/product/4698
+    category: B
+    verified: false
+    why: "Classifies coloured docking pads; a real charging dock would add electrical contacts"
+  - name: Battery
+    maker: Tattu
+    model: R-Line 5.0 6S 2200 mAh 150C LiPo (48.8 Wh)
+    qty: 1
+    mass_g: 346
+    price_usd: 52.99
+    power_w: 0
+    interface: "XT60"
+    url: https://www.readymaderc.com/products/details/86770-tattu-r-line-version-5-0-2200mah-6s-150c-22-2v-lipo-battery-pack-with-xt60-plug
+    category: A
+    verified: true
+    why: "Matches the simulated 330-346 g battery; 150C covers the ~230 A full-throttle peak"
+  - name: Wiring, connectors, straps, antennas, fasteners
+    maker: various
+    model: XT60/XT30 leads, silicone wire, battery straps, M2/M3 hardware
+    qty: 1
+    mass_g: 40
+    price_usd: 30
+    power_w: 0
+    interface: "-"
+    url: null
+    category: B
+    verified: false
+    why: "Allowance"
+
+# Hobbywing XRotor 2807 1300KV, 6S, HQ 7x4x3 (manufacturer table, per motor)
+thrust_table:
+  source: https://www.hobbywing.com/en/uploads/file/20251117/fd94f27f8842dd667fec8a668940d7b2.pdf
+  throttle_pct: [40, 50, 60, 70, 80, 90, 100]
+  thrust_g:     [648, 966, 1326, 1732, 2162, 2560, 2818]
+  current_a:    [6.4, 10.7, 16.6, 24.6, 34.4, 46.1, 56.7]
+  power_w:      [155, 257, 400, 591, 827, 1107, 1361]
+
+# alternative endurance battery (estimate)
+alt_battery:
+  name: 6S1P Li-ion pack, Molicel P45B 21700 cells (4500 mAh, 45 A continuous)
+  mass_g: 430
+  energy_wh: 97
+  price_usd: 75
+  verified: false
