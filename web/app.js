@@ -554,6 +554,13 @@ async function setupLive() {
   } catch (e) { /* static hosting: no live server */ }
 }
 
+// small automation hook (used by scripts/capture_viewer.py for README media)
+window.connectocopter = {
+  frameCount: () => (state.replay ? state.replay.frames.length : 0),
+  showFrame: (i) => { state.playing = false; state.simT = i * ((state.replay && state.replay.control_dt) || 0.02); show(i); },
+  load: (file) => { $('episode').value = file; return loadReplay(file).then(() => { state.playing = false; }); },
+};
+
 async function main() {
   buildPathways();
   await Promise.all([buildRobot(), buildBrain()]);

@@ -122,7 +122,14 @@ def fpv_for(r, i):
     return None
 
 
-def render_clip(name, title, t0=0.0, t1=None, size=(960, 540), every=2, gif_width=560, gif_fps=12, dist=None):
+def vis_option():
+    opt = mujoco.MjvOption()
+    opt.flags[mujoco.mjtVisFlag.mjVIS_RANGEFINDER] = False  # hide the sensor ray (visualisation only)
+    return opt
+
+
+def render_clip(name, title, t0=0.0, t1=None, size=(960, 544), every=2, gif_width=480, gif_fps=10, dist=None,
+                elev=-16.0, az_off=-25.0):
     r = load(name)
     m, d = world_from_replay(r)
     ren = mujoco.Renderer(m, size[1], size[0])
@@ -144,10 +151,10 @@ def render_clip(name, title, t0=0.0, t1=None, size=(960, 540), every=2, gif_widt
         p = np.array(f["pos"])
         look = p if look is None else look + 0.25 * (p - look)
         cam.lookat[:] = look + np.array([0, 0, 0.05])
-        cam.azimuth = np.rad2deg(yaw_s) + 180 - 25
-        cam.elevation = -16
-        cam.distance = dist or (1.7 if f["mode"] == "ground" else 2.3)
-        ren.update_scene(d, cam)
+        cam.azimuth = np.rad2deg(yaw_s) + 180 + az_off
+        cam.elevation = elev
+        cam.distance = dist or (1.25 if f["mode"] == "ground" else 1.9)
+        ren.update_scene(d, cam, vis_option())
         img = hud(ren.render(), f, r, title)
         fp = fpv_for(r, i)
         if fp is not None:
@@ -163,7 +170,7 @@ def render_clip(name, title, t0=0.0, t1=None, size=(960, 540), every=2, gif_widt
     # GIF: downscale and subsample to keep the file small
     step = max(1, int(round(fps / gif_fps)))
     g = [np.asarray(Image.fromarray(o).resize((gif_width, int(gif_width * size[1] / size[0])), Image.LANCZOS)) for o in out[::step]]
-    pal = [Image.fromarray(x).convert("P", palette=Image.ADAPTIVE, colors=128) for x in g]
+    pal = [Image.fromarray(x).convert("P", palette=Image.ADAPTIVE, colors=96) for x in g]
     pal[0].save(IMG / f"{stem}.gif", save_all=True, append_images=pal[1:], duration=int(1000 / gif_fps), loop=0, optimize=True)
     print(f"{stem}: {len(out)} frames -> {MEDIA / (stem + '.mp4')} ({(MEDIA / (stem + '.mp4')).stat().st_size / 1e6:.1f} MB), "
           f"gif {(IMG / (stem + '.gif')).stat().st_size / 1e6:.1f} MB")
@@ -178,7 +185,7 @@ def stills():
     cam.type = mujoco.mjtCamera.mjCAMERA_FREE
     cam.lookat[:] = np.array(r["frames"][10]["pos"]) + np.array([0, 0, 0.0])
     cam.azimuth, cam.elevation, cam.distance = 140, -20, 0.62
-    ren.update_scene(d, cam)
+    ren.update_scene(d, cam, vis_option())
     Image.fromarray(ren.render()).save(IMG / "robot_closeup.png")
     r = load("flight_course_connectome.json.gz")
     m, d = world_from_replay(r)
@@ -187,18 +194,18 @@ def stills():
     ren2 = mujoco.Renderer(m, 720, 1280)
     cam.lookat[:] = r["frames"][k]["pos"]
     cam.azimuth, cam.elevation, cam.distance = 200, -12, 1.4
-    ren2.update_scene(d, cam)
+    ren2.update_scene(d, cam, vis_option())
     Image.fromarray(ren2.render()).save(IMG / "robot_flight.png")
     print("stills written")
 
 
 CLIPS = [
-    ("looming_escape_connectome.json.gz", "Looming ball → LPLC2/LC4 → Giant Fiber → escape take-off", {}),
-    ("flight_course_connectome.json.gz", "Flight course: LC10a beacon tracking + LC16 avoidance", {"t0": 0.0, "t1": 14.0}),
-    ("obstacle_course_connectome.json.gz", "Rolling: LC16 → contralateral DNa01/DNa02 steer around pillars", {"t0": 2.0, "t1": 16.0}),
+    ("looming_escape_connectome.json.gz", "Looming ball → LPLC2/LC4 → Giant Fiber → escape take-off", {"t0": 1.5, "dist": 3.2, "elev": -10, "az_off": -150}),
+    ("flight_course_connectome.json.gz", "Flight course: LC10a beacon tracking + LC16 avoidance", {"t0": 0.0, "t1": 12.0}),
+    ("obstacle_course_connectome.json.gz", "Rolling: LC16 → contralateral DNa01/DNa02 steer around pillars", {"t0": 2.0, "t1": 12.0}),
     ("taste_dock_connectome.json.gz", "Taste: sugar GRNs → MN9 → stop and 'feed'; bitter vetoes", {}),
     ("target_seek_connectome.json.gz", "Beacon → LC10a → ipsilateral DNa02 → turn toward it", {}),
-    ("yaw_stabilization_connectome.json.gz", "Yaw gyro failed: HS/H2 → DNp15 optomotor response", {"t0": 3.0}),
+    ("yaw_stabilization_connectome.json.gz", "Yaw gyro failed: HS/H2 → DNp15 optomotor response", {"t0": 3.0, "t1": 11.0}),
 ]
 
 
