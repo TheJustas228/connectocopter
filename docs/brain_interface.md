@@ -48,8 +48,9 @@ The unmodified `model.py` of Shiu et al. (pinned commit) and the GPU port were r
 | 50 Hz | **0.9991** | 0.96 | 16.98 → 18.15 Hz |
 | 100 Hz | **0.9996** | 0.98 | 59.62 → 58.65 Hz |
 | 150 Hz | **0.9999** | 0.99 | 70.22 → 70.25 Hz |
-BRIAN2_200_ROW
-(Each Brian2 condition costs ~30–60 CPU-minutes and ~3–6 GB RAM; the port needs ~5 s on the GPU for all 30 trials.)
+| 200 Hz | **0.9997** | 1.00 | 78.93 → 78.70 Hz |
+
+(Each Brian2 condition costs ~30–60 CPU-minutes and 3–8 GB RAM, peaking at 7.6 GB at 200 Hz; the port needs ~5 s on the GPU for all 30 trials.)
 
 ![Brian2 vs GPU port](../results/validation/brian2_vs_port.png)
 

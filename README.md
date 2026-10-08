@@ -148,7 +148,7 @@ automatically.
 |---|---|---|
 | Benchmarks (seeds ≥ 1000, all controllers and ablations) | `python scripts/run_benchmarks.py --workers 2` then `--summarize` | `results/benchmarks/` |
 | Figures | `python scripts/make_figures.py` | `docs/img/results_*.png` |
-| Brain engine vs original Brian2 code (needs `download_data.py --with-630`; Brian2 side takes CPU hours and ~3–6 GB RAM per worker) | `python scripts/validate_against_brian2.py --port --brian2 --compare` | `results/validation/` |
+| Brain engine vs original Brian2 code (needs `download_data.py --with-630`; Brian2 side takes CPU hours and 3–8 GB RAM per worker) | `python scripts/validate_against_brian2.py --port --brian2 --compare` | `results/validation/` |
 | Pathway atlas (what each sense drives in the model) | `python scripts/probe_pathways.py` | `results/pathways/` |
 | Wheel-actuator sensitivity | `python scripts/sensitivity_wheels.py` | `results/sensitivity_wheels.json` |
 | Hardware feasibility | `python scripts/feasibility.py` | `docs/hardware.md`, `results/feasibility.json` |
