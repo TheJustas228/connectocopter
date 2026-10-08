@@ -127,12 +127,17 @@ function buildArena(r) {
   puffMesh.count = 0;
   arenaGroup.add(puffMesh);
   const tg = new THREE.BufferGeometry();
-  tg.setAttribute('position', new THREE.BufferAttribute(new Float32Array(r.frames.length * 3), 3));
+  tg.setAttribute('position', new THREE.BufferAttribute(new Float32Array(Math.max(r.frames.length, 9000) * 3), 3));
   tg.setDrawRange(0, 0);
   trail = new THREE.Line(tg, new THREE.LineBasicMaterial({ color: 0xf2a93b, transparent: true, opacity: 0.55 }));
   arenaGroup.add(trail);
-  const P = tg.attributes.position.array;
-  r.frames.forEach((f, i) => { P[3 * i] = f.pos[0]; P[3 * i + 1] = f.pos[1]; P[3 * i + 2] = Math.max(f.pos[2] - 0.07, 0.01); });
+  r.frames.forEach((f, i) => trailPoint(i, f));
+}
+function trailPoint(i, f) {
+  const P = trail.geometry.attributes.position.array;
+  if (3 * i + 2 >= P.length) return;
+  P[3 * i] = f.pos[0]; P[3 * i + 1] = f.pos[1]; P[3 * i + 2] = Math.max(f.pos[2] - 0.07, 0.01);
+  trail.geometry.attributes.position.needsUpdate = true;
 }
 
 // ------------------------------------------------------------------ robot model
@@ -379,6 +384,8 @@ function show(i) {
 }
 
 async function loadReplay(file) {
+  if (liveSocket) { liveSocket.close(); liveSocket = null; }
+  state.live = false;
   state.playing = false;
   $('play').textContent = 'Play';
   const res = await fetch(`replays/${file}`);
@@ -450,7 +457,10 @@ function tick(now) {
   state.last = now;
   resize();
   const r = state.replay;
-  if (r && state.playing) {
+  if (r && state.live) {
+    const last = r.frames.length - 1;
+    if (last >= 0 && last !== state.idx) show(last);
+  } else if (r && state.playing) {
     state.simT += dt * state.speed;
     const i = Math.floor(state.simT / (r.control_dt || 0.02));
     if (i >= r.frames.length - 1) {
@@ -496,6 +506,54 @@ for (const [id, follow] of [['cam-follow', true], ['cam-free', false]]) {
 }
 controls.enabled = false;
 
+// ------------------------------------------------------------------ live mode (local server only)
+let liveSocket = null;
+function startLive(task, controller) {
+  if (liveSocket) liveSocket.close();
+  const seed = 3000 + Math.floor(Math.random() * 1000);
+  const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+  const ws = new WebSocket(`${proto}://${location.host}/ws/live?task=${task}&controller=${controller}&seed=${seed}`);
+  liveSocket = ws;
+  state.playing = false;
+  $('play').textContent = 'Live';
+  $('outcome').innerHTML = `<b>Live:</b> starting ${task} with the ${controller} controller (seed ${seed}); loading the brain can take a few seconds…`;
+  ws.onmessage = (ev) => {
+    const msg = JSON.parse(ev.data);
+    if (msg.type === 'header') {
+      state.replay = { ...msg, frames: [], task_title: `${msg.task} (live)` };
+      state.live = true; state.idx = 0; lastBrainIdx = -1; fpvIdx = -1;
+      if (brain.act) brain.act.fill(0);
+      buildArena(state.replay);
+      $('taskline').textContent = `${msg.task} · ${msg.controller} controller · seed ${msg.seed} · live`;
+    } else if (msg.type === 'frame' && state.replay) {
+      const fr = msg; delete fr.type;
+      state.replay.frames.push(fr);
+      trailPoint(state.replay.frames.length - 1, fr);
+      $('scrub').max = state.replay.frames.length - 1;
+    } else if (msg.type === 'done') {
+      state.live = false;
+      state.replay.metrics = msg.metrics;
+      const ok = msg.metrics.success;
+      $('outcome').innerHTML = `<b>Live run finished:</b> <span class="${ok ? 'ok' : 'fail'}">${ok ? 'task completed' : 'task failed'}</span>`;
+      $('play').textContent = 'Replay';
+    } else if (msg.type === 'error') {
+      $('outcome').innerHTML = `<span class="fail">Live simulation error: ${msg.message}</span>`;
+    }
+  };
+  ws.onclose = () => { if (state.live) { state.live = false; $('outcome').innerHTML += ' (connection closed)'; } };
+}
+
+async function setupLive() {
+  try {
+    const info = await (await fetch('api/info')).json();
+    if (!info.live) return;
+    const sel = $('live-task');
+    for (const t of info.tasks) { const o = document.createElement('option'); o.value = o.textContent = t; sel.appendChild(o); }
+    $('live').hidden = false;
+    $('live-run').addEventListener('click', () => startLive(sel.value, $('live-ctrl').value));
+  } catch (e) { /* static hosting: no live server */ }
+}
+
 async function main() {
   buildPathways();
   await Promise.all([buildRobot(), buildBrain()]);
@@ -510,6 +568,7 @@ async function main() {
   sel.addEventListener('change', () => loadReplay(sel.value));
   const want = new URLSearchParams(location.search).get('episode');
   if (want && list.some((e) => e.file === want)) sel.value = want;
+  setupLive();
   await loadReplay(sel.value);
   const params = new URLSearchParams(location.search);
   if (params.has('t')) {

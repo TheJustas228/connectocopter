@@ -22,10 +22,20 @@
     <h1>Connectocopter</h1>
     <p class="lede">A spiking model of the entire fruit-fly brain &mdash; 138,639 neurons wired by the FlyWire connectome &mdash; reads this robot's sensors and drives its wheels and rotors. Every frame below is recorded simulation output.</p>
   </div>
-  <label class="picker">
-    <span>Episode</span>
-    <select id="episode" aria-label="Choose a recorded episode"></select>
-  </label>
+  <div class="pickers">
+    <label class="picker">
+      <span>Recorded episode</span>
+      <select id="episode" aria-label="Choose a recorded episode"></select>
+    </label>
+    <div class="live" id="live" hidden>
+      <span>Or run a new simulation on this machine</span>
+      <div class="live-row">
+        <select id="live-task" aria-label="Task"></select>
+        <select id="live-ctrl" aria-label="Controller"><option value="connectome">connectome</option><option value="baseline">baseline</option></select>
+        <button id="live-run">Run live</button>
+      </div>
+    </div>
+  </div>
 </header>
 
 <main class="rig">

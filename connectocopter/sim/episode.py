@@ -38,9 +38,10 @@ class EpisodeResult:
 
 class Episode:
     def __init__(self, task, controller, seed: int, record: bool = False, record_fpv_every: int = 5,
-                 render: bool = True, params: RobotParams = RobotParams(), fpv_size=(160, 120)):
+                 render: bool = True, params: RobotParams = RobotParams(), fpv_size=(160, 120), on_frame=None):
         self.task, self.ctrl, self.seed = task, controller, seed
-        self.record = record
+        self.record = record or on_frame is not None
+        self.on_frame = on_frame  # optional callback(frame_dict) for live streaming
         self.record_fpv_every = record_fpv_every
         self.rng = np.random.default_rng(seed)
         arena, env = task.build(np.random.default_rng(seed))
@@ -162,15 +163,16 @@ class Episode:
             iio.imwrite(buf, self.sensors.last_frame, extension=".jpg", quality=70)
             fr["fpv"] = base64.b64encode(buf.getvalue()).decode()
         self.frames.append(fr)
+        if self.on_frame is not None:
+            self.on_frame(fr)
+
+    def header(self) -> dict:
+        """Static scene description (everything a viewer needs before frames)."""
+        objs = [{k: (list(v) if isinstance(v, tuple) else v) for k, v in o.items()} for o in self.arena.objects]
+        return {"task": self.task.name, "controller": self.ctrl.label, "seed": self.seed,
+                "arena": {"size": list(self.arena.size), "center": list(self.arena.center), "walls": self.arena.walls,
+                          "wall_height": self.arena.wall_height, "objects": objs},
+                "pads": self.env.pads, "control_dt": self.ctrl_dt}
 
     def _replay_dict(self, metrics: dict) -> dict:
-        objs = []
-        for o in self.arena.objects:
-            oo = {k: (list(v) if isinstance(v, tuple) else v) for k, v in o.items()}
-            objs.append(oo)
-        return {
-            "task": self.task.name, "controller": self.ctrl.label, "seed": self.seed,
-            "arena": {"size": list(self.arena.size), "center": list(self.arena.center), "walls": self.arena.walls,
-                      "wall_height": self.arena.wall_height, "objects": objs},
-            "pads": self.env.pads, "control_dt": self.ctrl_dt, "metrics": metrics, "frames": self.frames,
-        }
+        return {**self.header(), "metrics": metrics, "frames": self.frames}

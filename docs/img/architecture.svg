@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" font-family="Chivo, 'Helvetica Neue', Arial, sans-serif">
+  <title>Connectocopter architecture: sensors to whole-brain model to body</title>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a96a8"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#63e68c"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="640" rx="14" fill="#121a26"/>
+
+  <!-- world -->
+  <rect x="24" y="24" width="1152" height="64" rx="10" fill="#18222f" stroke="#263345"/>
+  <text x="44" y="52" fill="#d7dee8" font-size="17" font-weight="800">Simulated world — MuJoCo 3.15</text>
+  <text x="44" y="73" fill="#8a96a8" font-size="13">arena, obstacles, beacons, taste pads, looming ball, odor plume, wind · robot: 7-inch X quad, 4 rotors (thrust + yaw torque, 35 ms lag), 4 skid-steer wheels · 2 ms physics</text>
+
+  <!-- sensors column -->
+  <rect x="24" y="112" width="250" height="300" rx="10" fill="#18222f" stroke="#8fb8e8"/>
+  <text x="40" y="138" fill="#8fb8e8" font-size="15" font-weight="800">Robot sensors</text>
+  <g font-size="13" fill="#d7dee8">
+    <text x="40" y="164">FPV camera 160×120, 50 Hz</text>
+    <text x="40" y="186">ToF ranging fan ±60°</text>
+    <text x="40" y="208">pad contact ("taste")</text>
+    <text x="40" y="230">vibration / airflow</text>
+    <text x="40" y="252">IMU, rangefinder, encoders</text>
+  </g>
+  <line x1="40" y1="272" x2="258" y2="272" stroke="#263345"/>
+  <text x="40" y="294" fill="#8fb8e8" font-size="14" font-weight="600">Feature extraction</text>
+  <g font-size="12.5" fill="#8a96a8">
+    <text x="40" y="316">Hassenstein–Reichardt motion</text>
+    <text x="40" y="334">detectors → HS/H2-like flow</text>
+    <text x="40" y="352">dark-object growth → looming</text>
+    <text x="40" y="370">bright blob → beacon azimuth</text>
+    <text x="40" y="388">range × speed → approach rate</text>
+  </g>
+
+  <!-- encoders -->
+  <rect x="300" y="112" width="250" height="300" rx="10" fill="#18222f" stroke="#8fb8e8"/>
+  <text x="316" y="138" fill="#8fb8e8" font-size="15" font-weight="800">Encoders</text>
+  <text x="316" y="158" fill="#8a96a8" font-size="12.5">Poisson drive to identified neurons</text>
+  <g font-size="13" fill="#d7dee8">
+    <text x="316" y="186">looming → LPLC2 + LC4</text>
+    <text x="316" y="208">obstacle → LC16</text>
+    <text x="316" y="230">beacon → LC10a</text>
+    <text x="316" y="252">rotation → HS cells, H2</text>
+    <text x="316" y="274">taste → sugar / bitter GRNs</text>
+    <text x="316" y="296">vibration → Johnston's organ</text>
+  </g>
+  <text x="316" y="330" fill="#8a96a8" font-size="12.5">1,649 input neurons, L/R</text>
+  <text x="316" y="348" fill="#8a96a8" font-size="12.5">symmetry-calibrated gains</text>
+  <text x="316" y="380" fill="#8a96a8" font-size="12">configs/interface.yaml</text>
+
+  <!-- brain -->
+  <rect x="576" y="112" width="300" height="300" rx="10" fill="#1b1723" stroke="#c2408f" stroke-width="2"/>
+  <text x="594" y="140" fill="#e07ab8" font-size="16" font-weight="800">Whole-brain LIF model</text>
+  <text x="594" y="162" fill="#d7dee8" font-size="13">FlyWire v783 connectome</text>
+  <text x="594" y="182" fill="#d7dee8" font-size="13">138,639 neurons · 15.1 M connections</text>
+  <text x="594" y="202" fill="#d7dee8" font-size="13">54.5 M synapses, NT-signed</text>
+  <text x="594" y="226" fill="#8a96a8" font-size="12.5">Shiu et al. 2024 equations, dt 0.1 ms,</text>
+  <text x="594" y="244" fill="#8a96a8" font-size="12.5">1.8 ms delay; GPU, ~10× real time;</text>
+  <text x="594" y="262" fill="#8a96a8" font-size="12.5">r = 0.9996 vs original Brian2 code</text>
+  <!-- neuron dots -->
+  <g fill="#c2408f" opacity="0.55">
+    <circle cx="620" cy="300" r="3"/><circle cx="640" cy="320" r="3"/><circle cx="662" cy="296" r="3"/><circle cx="684" cy="330" r="3"/><circle cx="706" cy="305" r="3"/><circle cx="730" cy="340" r="3"/><circle cx="752" cy="300" r="3"/><circle cx="776" cy="326" r="3"/><circle cx="800" cy="310" r="3"/><circle cx="826" cy="336" r="3"/><circle cx="846" cy="300" r="3"/><circle cx="650" cy="356" r="3"/><circle cx="700" cy="366" r="3"/><circle cx="760" cy="362" r="3"/><circle cx="812" cy="370" r="3"/>
+  </g>
+  <g fill="#63e68c">
+    <circle cx="662" cy="296" r="4.5"/><circle cx="730" cy="340" r="4.5"/><circle cx="800" cy="310" r="4.5"/><circle cx="760" cy="362" r="4.5"/>
+  </g>
+  <text x="594" y="398" fill="#63e68c" font-size="12">spikes propagate through the connectome</text>
+
+  <!-- decoders -->
+  <rect x="902" y="112" width="274" height="300" rx="10" fill="#18222f" stroke="#63e68c"/>
+  <text x="918" y="138" fill="#63e68c" font-size="15" font-weight="800">Decoders</text>
+  <text x="918" y="158" fill="#8a96a8" font-size="12.5">descending / motor neuron read-out</text>
+  <g font-size="13" fill="#d7dee8">
+    <text x="918" y="186">DNa01, DNa02, DNg13, DNp15,</text>
+    <text x="918" y="204">DNb06 (L − R) → yaw rate</text>
+    <text x="918" y="230">Giant Fiber DNp01 → escape</text>
+    <text x="918" y="256">MN9 → halt / dock ("feed")</text>
+    <text x="918" y="282">MDN → reverse</text>
+    <text x="918" y="308">DNg02 → recorded only</text>
+  </g>
+  <text x="918" y="342" fill="#8a96a8" font-size="12.5">20 ms windows, filtered rates</text>
+  <text x="918" y="380" fill="#8a96a8" font-size="12">brain decides: turn, stop, back up, escape</text>
+
+  <!-- arrows across -->
+  <line x1="274" y1="262" x2="296" y2="262" stroke="#8a96a8" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="550" y1="262" x2="572" y2="262" stroke="#8a96a8" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="876" y1="262" x2="898" y2="262" stroke="#63e68c" stroke-width="2" marker-end="url(#ag)"/>
+
+  <!-- command + low level -->
+  <rect x="576" y="440" width="600" height="112" rx="10" fill="#18222f" stroke="#f2a93b"/>
+  <text x="594" y="466" fill="#f2a93b" font-size="15" font-weight="800">Conventional low-level control — not brain output</text>
+  <g font-size="13" fill="#d7dee8">
+    <text x="594" y="490">command: forward speed (internal drive) · yaw rate · escape · halt   +   mission: take off / land</text>
+    <text x="594" y="512">geometric flight controller (attitude, rates, altitude) → 4 rotor thrusts</text>
+    <text x="594" y="534">skid-steer yaw-rate loop → 4 wheel speeds · contact retreat reflex · mode machine</text>
+  </g>
+  <line x1="1040" y1="412" x2="1040" y2="436" stroke="#63e68c" stroke-width="2" marker-end="url(#ag)"/>
+
+  <!-- baseline -->
+  <rect x="300" y="440" width="250" height="112" rx="10" fill="#18222f" stroke="#263345" stroke-dasharray="5 4"/>
+  <text x="316" y="466" fill="#d7dee8" font-size="15" font-weight="800">Baseline controller</text>
+  <text x="316" y="490" fill="#8a96a8" font-size="12.5">same features, hand-written rules</text>
+  <text x="316" y="508" fill="#8a96a8" font-size="12.5">(Braitenberg steering, thresholds,</text>
+  <text x="316" y="526" fill="#8a96a8" font-size="12.5">cast-and-surge) — same low level</text>
+  <line x1="550" y1="496" x2="572" y2="496" stroke="#8a96a8" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#a)"/>
+
+  <!-- loop back -->
+  <path d="M 576 590 L 150 590 L 150 416" fill="none" stroke="#8a96a8" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M 876 552 L 876 590 L 576 590" fill="none" stroke="#8a96a8" stroke-width="2"/>
+  <text x="300" y="614" fill="#8a96a8" font-size="13">rotors + wheels move the body → the world changes → new sensor readings (closed loop every 20 ms)</text>
+  <line x1="150" y1="112" x2="150" y2="92" stroke="#8a96a8" stroke-width="2" marker-end="url(#a)"/>
+</svg>
